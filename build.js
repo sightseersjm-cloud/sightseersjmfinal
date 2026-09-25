@@ -29,3 +29,22 @@ html = html.includes('<head>') ? html.replace('<head>', '<head>' + BRIDGE) : BRI
 
 fs.writeFileSync(DEST, html, 'utf8');
 console.log(`🚀  Built → public/index.html (${(fs.statSync(DEST).size/1024).toFixed(0)} KB)`);
+
+// Copy static assets (e.g. /assets/tents/*.jpg) into the public output so they deploy.
+function copyDir(src, dest){
+  if (!fs.existsSync(src)) return;
+  fs.mkdirSync(dest, { recursive: true });
+  for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+    const s = path.join(src, entry.name);
+    const d = path.join(dest, entry.name);
+    if (entry.isDirectory()) copyDir(s, d);
+    else fs.copyFileSync(s, d);
+  }
+}
+const ASSETS_SRC = path.join(__dirname, 'assets');
+if (fs.existsSync(ASSETS_SRC)) {
+  copyDir(ASSETS_SRC, path.join(publicDir, 'assets'));
+  console.log('🖼️   Copied assets/ → public/assets/');
+} else {
+  console.log('ℹ️   No assets/ folder found (tent images will 404 until added).');
+}
