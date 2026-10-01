@@ -9903,6 +9903,582 @@ body.theme-night .page .tag{
 </script>
 </section>
 
+<!-- ======== IMMERSIVE 360° PANORAMA (Glassmorphic Caribbean) ======== -->
+<section class="pano360-sec" id="pano360Sec" aria-labelledby="pano360Heading">
+<style>
+.pano360-sec{
+  --p-ocean:#071D26;--p-ocean-2:#0b2a37;--p-teal:#2EF2CF;--p-amber:#FFB74D;
+  --p-text:#F4FAFC;--p-text2:#B7CDD1;--p-line:rgba(255,255,255,.12);
+  --p-glass:rgba(7,29,38,.82);--p-glass-2:rgba(9,34,45,.72);
+  padding:88px 0 92px;position:relative;overflow:hidden;
+  background:linear-gradient(180deg,#0d5589 0%,#083f63 34%,#06283b 70%,#041c2a 100%);
+  font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+.pano360-sec::before{content:'';position:absolute;left:-140px;top:-110px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(46,242,207,.14),transparent 68%);pointer-events:none}
+.pano360-sec::after{content:'';position:absolute;right:-120px;bottom:-120px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(255,183,77,.12),transparent 70%);pointer-events:none}
+.pano360-wrap{max-width:1280px;margin:0 auto;padding:0 30px;position:relative;z-index:1}
+.pano360-head{max-width:720px;margin:0 0 34px}
+.pano360-pre{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--p-teal);margin-bottom:14px}
+.pano360-pre::before{content:'';width:26px;height:2px;background:var(--p-teal);border-radius:2px}
+.pano360-h2{font-family:'Playfair Display',serif;font-size:clamp(2.1rem,3.6vw,3.3rem);line-height:1.04;color:var(--p-text);font-weight:700;margin-bottom:14px}
+.pano360-sub{font-size:15px;line-height:1.8;color:var(--p-text2);max-width:620px}
+
+.pano360-shell{display:grid;grid-template-columns:1.32fr .68fr;gap:22px;align-items:stretch}
+
+/* ---- Stage ---- */
+.pano360-stage{position:relative;min-height:560px;border-radius:24px;overflow:hidden;background:var(--p-ocean);
+  box-shadow:0 34px 80px rgba(3,18,30,.5),inset 0 0 0 1px var(--p-line);
+  perspective:1400px;touch-action:none;cursor:grab;outline:none;isolation:isolate}
+.pano360-stage:focus-visible{box-shadow:0 34px 80px rgba(3,18,30,.5),0 0 0 3px rgba(46,242,207,.65)}
+.pano360-stage.dragging{cursor:grabbing}
+.pano360-pan{position:absolute;top:0;left:0;will-change:transform;transform:translate3d(0,0,0);transform-origin:center center}
+.pano360-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;-webkit-user-drag:none;user-select:none;pointer-events:none}
+.pano360-poster{position:absolute;inset:0;background-size:cover;background-position:center;filter:blur(18px);transform:scale(1.12);transition:opacity .5s ease;z-index:1}
+.pano360-poster.hide{opacity:0}
+.pano360-scrim{position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:
+   radial-gradient(130% 90% at 50% 8%,transparent 46%,rgba(4,18,28,.42) 100%),
+   linear-gradient(to top,rgba(4,16,26,.82) 0%,rgba(4,16,26,.22) 34%,rgba(4,16,26,.05) 62%,rgba(4,16,26,.28) 100%)}
+
+/* ---- Top bar: media state + compass ---- */
+.pano360-topbar{position:absolute;top:0;left:0;right:0;z-index:6;display:flex;align-items:flex-start;justify-content:space-between;padding:18px 18px 0;pointer-events:none}
+.pano360-state{display:inline-flex;align-items:center;gap:9px;padding:9px 14px;border-radius:999px;
+  background:var(--p-glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid var(--p-line);color:var(--p-text);font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+.pano360-state .dot{width:8px;height:8px;border-radius:50%;background:var(--p-teal);box-shadow:0 0 10px rgba(46,242,207,.8)}
+.pano360-state[data-state="Live"] .dot{background:#ff5c7a;box-shadow:0 0 10px rgba(255,92,122,.9);animation:pano360Blink 1.6s infinite}
+.pano360-state[data-state="Scheduled"] .dot{background:var(--p-amber);box-shadow:0 0 10px rgba(255,183,77,.8)}
+.pano360-state[data-state="Demo"] .dot{background:#8aa6b0;box-shadow:none}
+@keyframes pano360Blink{0%,100%{opacity:1}50%{opacity:.3}}
+.pano360-compass{display:flex;align-items:center;gap:10px}
+.pano360-stoplabel{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--p-text);background:var(--p-glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--p-line);padding:9px 13px;border-radius:999px;max-width:190px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pano360-dial{position:relative;width:42px;height:42px;border-radius:50%;background:var(--p-glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--p-line);flex:0 0 auto}
+.pano360-dial b{position:absolute;top:3px;left:50%;transform:translateX(-50%);font-size:8px;font-weight:800;color:var(--p-teal);letter-spacing:1px}
+.pano360-needle{position:absolute;top:50%;left:50%;width:2px;height:15px;background:linear-gradient(to top,transparent,var(--p-teal));transform-origin:bottom center;transform:translate(-50%,-100%) rotate(0deg);transition:transform .12s linear}
+
+/* ---- Hotspots (inside pan layer) ---- */
+.pano360-hotspots{position:absolute;inset:0;z-index:4}
+.pano360-hotspot{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:none;padding:0;cursor:pointer;pointer-events:auto}
+.pano360-hs-dot{position:relative;width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#04202b;font-size:15px;
+  background:radial-gradient(circle at 35% 30%,#eafff9,var(--p-teal) 70%);
+  box-shadow:0 8px 22px rgba(4,24,34,.5),0 0 0 6px rgba(46,242,207,.14);transition:transform .18s ease,box-shadow .18s ease}
+.pano360-hotspot:hover .pano360-hs-dot,.pano360-hotspot.active .pano360-hs-dot{transform:scale(1.08);box-shadow:0 10px 28px rgba(4,24,34,.55),0 0 0 9px rgba(46,242,207,.2)}
+.pano360-hotspot.active .pano360-hs-dot{background:radial-gradient(circle at 35% 30%,#fff2d8,var(--p-amber) 70%)}
+.pano360-hs-tag{display:inline-flex;align-items:center;gap:7px;background:var(--p-glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--p-line);color:var(--p-text);
+  padding:6px 11px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.6px;white-space:nowrap;box-shadow:0 10px 24px rgba(4,20,30,.4)}
+.pano360-hs-tag b{color:var(--p-teal);font-weight:800}
+
+/* ---- Anchored preview card ---- */
+.pano360-preview{position:absolute;left:50%;bottom:22px;transform:translateX(-50%) translateY(12px);z-index:8;width:min(340px,86%);
+  background:var(--p-glass);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border:1px solid var(--p-line);border-radius:18px;
+  padding:16px 18px;color:var(--p-text);box-shadow:0 22px 54px rgba(3,16,26,.55);opacity:0;visibility:hidden;transition:opacity .2s ease,transform .2s ease}
+.pano360-preview.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+.pano360-preview-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+.pano360-preview-eyebrow{font-size:10px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--p-teal)}
+.pano360-preview-close{background:rgba(255,255,255,.08);border:1px solid var(--p-line);color:var(--p-text);width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:12px;line-height:1;flex:0 0 auto}
+.pano360-preview h5{font-size:16px;font-weight:800;margin:0 0 6px;line-height:1.2}
+.pano360-preview p{font-size:12px;line-height:1.65;color:var(--p-text2);margin:0 0 12px}
+.pano360-preview-meta{display:flex;align-items:center;gap:12px;margin-bottom:13px;flex-wrap:wrap}
+.pano360-preview-price{font-size:15px;font-weight:800;color:var(--p-text)}
+.pano360-chip{font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:5px 9px;border-radius:999px;border:1px solid var(--p-line)}
+.pano360-chip[data-ok="1"]{color:#06201a;background:var(--p-teal)}
+.pano360-chip[data-ok="0"]{color:var(--p-amber);background:rgba(255,183,77,.12)}
+.pano360-preview-act{display:flex;gap:10px}
+.pano360-preview-act button{flex:1;min-height:42px;border-radius:12px;font-size:12px;font-weight:800;letter-spacing:.4px;cursor:pointer;border:1px solid var(--p-line);transition:transform .16s ease,background .16s ease}
+.pano360-preview-act .primary{background:var(--p-teal);color:#04231c;border-color:transparent}
+.pano360-preview-act .primary:hover{transform:translateY(-1px)}
+.pano360-preview-act .ghost{background:rgba(255,255,255,.06);color:var(--p-text)}
+.pano360-preview-act .ghost:hover{background:rgba(255,255,255,.12)}
+
+/* ---- Caption + hint + control dock ---- */
+.pano360-caption{position:absolute;left:22px;bottom:22px;right:22px;z-index:5;color:var(--p-text);max-width:60%;pointer-events:none}
+.pano360-caption span{display:block;font-size:10px;font-weight:800;letter-spacing:2.4px;text-transform:uppercase;color:var(--p-teal);margin-bottom:7px}
+.pano360-caption h3{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,2.4vw,2.2rem);line-height:1.05;margin:0 0 8px;font-weight:700}
+.pano360-caption p{font-size:12.5px;line-height:1.7;color:var(--p-text2);margin:0}
+.pano360-hint{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);z-index:5;display:inline-flex;align-items:center;gap:9px;
+  background:var(--p-glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--p-line);color:var(--p-text);
+  padding:11px 16px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.4px;pointer-events:none;transition:opacity .4s ease}
+.pano360-hint i{color:var(--p-teal)}
+.pano360-hint.hide{opacity:0}
+.pano360-dock{position:absolute;right:16px;bottom:16px;z-index:7;display:flex;gap:8px}
+.pano360-ctrl{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;
+  background:var(--p-glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--p-line);color:var(--p-text);font-size:14px;transition:background .16s ease,transform .16s ease}
+.pano360-ctrl:hover{background:rgba(46,242,207,.18);transform:translateY(-1px)}
+.pano360-ctrl[aria-pressed="true"]{background:var(--p-teal);color:#04231c;border-color:transparent}
+
+/* ---- Glass commercial panel ---- */
+.pano360-panel{background:var(--p-glass-2);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--p-line);border-radius:24px;
+  padding:26px;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(3,16,26,.4)}
+.pano360-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.pano360-tab{border:1px solid var(--p-line);background:rgba(255,255,255,.05);color:var(--p-text2);padding:10px 13px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.8px;cursor:pointer;transition:all .18s ease}
+.pano360-tab:hover{color:var(--p-text);border-color:rgba(46,242,207,.4)}
+.pano360-tab.active{background:var(--p-teal);border-color:transparent;color:#04231c}
+.pano360-kicker{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--p-amber);margin-bottom:9px}
+.pano360-title{font-size:23px;font-weight:800;color:var(--p-text);line-height:1.12;margin:0 0 11px}
+.pano360-desc{font-size:13px;line-height:1.8;color:var(--p-text2);margin:0 0 20px}
+.pano360-stats{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:22px}
+.pano360-stat{padding:13px 14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--p-line)}
+.pano360-stat span{display:block;font-size:9.5px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--p-text2);margin-bottom:5px}
+.pano360-stat strong{font-size:13px;font-weight:800;color:var(--p-text);line-height:1.35}
+.pano360-stops{margin-bottom:22px}
+.pano360-stops h4{font-size:10px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--p-text2);margin:0 0 11px}
+.pano360-stoplist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+.pano360-stopitem{width:100%;display:flex;align-items:center;gap:12px;text-align:left;cursor:pointer;
+  background:rgba(255,255,255,.04);border:1px solid var(--p-line);border-radius:14px;padding:11px 13px;color:var(--p-text);transition:all .16s ease}
+.pano360-stopitem:hover,.pano360-stopitem:focus-visible{border-color:rgba(46,242,207,.5);background:rgba(46,242,207,.08);outline:none}
+.pano360-stopitem .ic{flex:0 0 auto;width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(46,242,207,.16);color:var(--p-teal);font-size:13px}
+.pano360-stopitem .tx{flex:1;min-width:0}
+.pano360-stopitem .tx b{display:block;font-size:12.5px;font-weight:800;line-height:1.2}
+.pano360-stopitem .tx small{display:block;font-size:10.5px;color:var(--p-text2);margin-top:2px}
+.pano360-stopitem .pr{flex:0 0 auto;font-size:12px;font-weight:800;color:var(--p-teal)}
+.pano360-actions{display:flex;gap:11px;margin-top:auto}
+.pano360-actions button{flex:1;min-height:48px;border-radius:14px;font-size:12.5px;font-weight:800;letter-spacing:.4px;cursor:pointer;transition:transform .16s ease,background .16s ease}
+.pano360-actions .primary{background:var(--p-amber);color:#3a2300;border:none}
+.pano360-actions .primary:hover{transform:translateY(-1px)}
+.pano360-actions .ghost{background:rgba(255,255,255,.06);color:var(--p-text);border:1px solid var(--p-line)}
+.pano360-actions .ghost:hover{background:rgba(255,255,255,.12)}
+.pano360-sr{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ---- Fullscreen / immersive ---- */
+.pano360-stage:fullscreen{width:100vw;height:100vh;border-radius:0}
+.pano360-stage:-webkit-full-screen{width:100vw;height:100vh;border-radius:0}
+
+/* ---- Responsive ---- */
+@media (max-width:1024px){
+  .pano360-shell{grid-template-columns:1fr}
+  .pano360-stage{min-height:480px}
+  .pano360-caption{max-width:76%}
+}
+@media (max-width:640px){
+  .pano360-sec{padding:64px 0 70px}
+  .pano360-wrap{padding:0 18px}
+  .pano360-stage{min-height:420px}
+  .pano360-caption{max-width:100%;right:22px}
+  .pano360-caption p{display:none}
+  .pano360-hs-tag{display:none}
+  .pano360-panel{padding:20px}
+}
+@media (prefers-reduced-motion:reduce){
+  .pano360-pan,.pano360-needle,.pano360-poster{transition:none!important}
+  .pano360-state[data-state="Live"] .dot{animation:none}
+}
+</style>
+
+<div class="pano360-wrap">
+  <div class="pano360-head">
+    <span class="pano360-pre">Immersive 360°</span>
+    <h2 class="pano360-h2" id="pano360Heading">Step inside before you book</h2>
+    <p class="pano360-sub">Drag to look around each destination, open a glowing point of interest to inspect what you can actually do there, and carry the moment straight into planning. Built to stay smooth on any device.</p>
+  </div>
+
+  <div class="pano360-shell">
+    <!-- STAGE -->
+    <div class="pano360-stage" id="pano360Stage" tabindex="0" role="application"
+         aria-label="360 degree destination viewer. Drag or use arrow keys to look around. Press Enter on a listed point of interest to inspect it.">
+      <div class="pano360-poster" id="pano360Poster"></div>
+      <div class="pano360-pan" id="pano360Pan">
+        <img class="pano360-img" id="pano360Img" alt="" draggable="false">
+        <div class="pano360-hotspots" id="pano360Hotspots"></div>
+      </div>
+      <div class="pano360-scrim"></div>
+
+      <div class="pano360-topbar">
+        <span class="pano360-state" id="pano360State" data-state="Recorded Preview"><span class="dot"></span><span id="pano360StateText">Recorded Preview</span></span>
+        <div class="pano360-compass">
+          <span class="pano360-stoplabel" id="pano360StopLabel">Jamaica Escape</span>
+          <div class="pano360-dial" aria-hidden="true"><b>N</b><span class="pano360-needle" id="pano360Needle"></span></div>
+        </div>
+      </div>
+
+      <div class="pano360-hint" id="pano360Hint"><i class="fas fa-hand-pointer"></i> Drag to look around</div>
+
+      <div class="pano360-preview" id="pano360Preview" role="dialog" aria-live="polite" aria-label="Point of interest details"></div>
+
+      <div class="pano360-caption">
+        <span id="pano360CapOver">Caribbean Preview</span>
+        <h3 id="pano360CapTitle">Jamaica Escape</h3>
+        <p id="pano360CapText"></p>
+      </div>
+
+      <div class="pano360-dock">
+        <button type="button" class="pano360-ctrl" id="pano360Reset" title="Reset view" aria-label="Reset view"><i class="fas fa-crosshairs"></i></button>
+        <button type="button" class="pano360-ctrl" id="pano360Spin" title="Auto rotate" aria-label="Toggle auto rotate" aria-pressed="false"><i class="fas fa-sync-alt"></i></button>
+        <button type="button" class="pano360-ctrl" id="pano360Full" title="Enter immersive mode" aria-label="Enter immersive full-screen mode"><i class="fas fa-expand"></i></button>
+      </div>
+    </div>
+
+    <!-- GLASS PANEL -->
+    <div class="pano360-panel">
+      <div class="pano360-tabs" id="pano360Tabs" role="tablist" aria-label="Choose a destination"></div>
+      <div class="pano360-kicker" id="pano360Kicker">Island Preview</div>
+      <h3 class="pano360-title" id="pano360Title">Jamaica Escape</h3>
+      <p class="pano360-desc" id="pano360Desc"></p>
+      <div class="pano360-stats" id="pano360Stats"></div>
+      <div class="pano360-stops">
+        <h4>Points in this view</h4>
+        <ul class="pano360-stoplist" id="pano360StopList"></ul>
+      </div>
+      <div class="pano360-actions">
+        <button type="button" class="primary" onclick="nav('booking')"><i class="fas fa-paper-plane"></i> Plan this trip</button>
+        <button type="button" class="ghost" onclick="nav('tours')">View experiences</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var IMG='https://images.unsplash.com/';
+  function wide(id){return IMG+id+'?w=2400&h=1200&fit=crop&crop=entropy&q=80';}
+  function poster(id){return IMG+id+'?w=56&h=28&fit=crop&blur=200&q=25';}
+
+  // Data model — ready for real equirectangular 360 images later:
+  //   set projection:'equirect' and point src/poster at a true 360 photo.
+  //   Everything else (hotspots, panel, compass) stays the same.
+  var STOPS=[
+    {id:'jamaica',tab:'Jamaica',kicker:'Island Preview',title:'Jamaica Escape',
+     capOver:'Caribbean Preview',state:'Recorded Preview',projection:'flat',
+     img:'photo-1530841377377-3ff06c0ca713',
+     capText:'Warm coastlines, lush hills and signature excursions, framed as the first moment of the trip.',
+     desc:'Preview waterfalls, river adventures, beach energy and mountain routes in one immersive planning moment.',
+     stats:[['Best for','Adventure + culture'],['Mood','Vibrant & easygoing'],['Best light','Sunrise to sunset'],['Signature','River rafting & lounge']],
+     spots:[
+       {icon:'fas fa-water',label:'River Vibes',x:21,y:68,price:'from $107',ok:1,blurb:'Bamboo rafting and a limestone foot-massage along the calm Rio Grande.'},
+       {icon:'fas fa-mountain',label:'Lush Peaks',x:58,y:33,price:'from $89',ok:0,blurb:'Blue Mountain lookout drives and fern-tunnel canopy trails above Ocho Rios.'},
+       {icon:'fas fa-cocktail',label:'Sunset Chill',x:82,y:63,price:'from $38',ok:1,blurb:'Negril cliff lounges and a golden-hour sail to close the day.'}
+     ]},
+    {id:'barbados',tab:'Barbados',kicker:'Beach Preview',title:'Barbados Breeze',
+     capOver:'West Coast Mood',state:'Recorded Preview',projection:'flat',
+     img:'photo-1605791946578-e8af17064c52',
+     capText:'Soft shoreline tones, sailing moments and relaxed luxury along the platinum coast.',
+     desc:'Explore west-coast calm, catamaran energy and postcard beaches in a cleaner, laid-back island preview.',
+     stats:[['Best for','Leisure + luxury'],['Mood','Calm & polished'],['Best light','Late morning to sunset'],['Signature','Catamaran & beach club']],
+     spots:[
+       {icon:'fas fa-ship',label:'Catamaran',x:25,y:60,price:'from $110',ok:1,blurb:'Turtle and shipwreck snorkel sail with lunch and an easy social deck.'},
+       {icon:'fas fa-umbrella-beach',label:'Golden Shore',x:63,y:40,price:'from $50',ok:1,blurb:'West-coast calm swimming and beach-club ease for first-timers.'},
+       {icon:'fas fa-sun',label:'Warm Glow',x:84,y:23,price:'from $149',ok:0,blurb:'A sunset dinner cruise along the quiet platinum coast.'}
+     ]},
+    {id:'stlucia',tab:'Saint Lucia',kicker:'Nature Preview',title:'Saint Lucia Peaks',
+     capOver:'Rainforest Escape',state:'Demo',projection:'flat',
+     img:'photo-1562702657-c4b8e5db6ce6',
+     capText:'Dramatic mountain silhouettes and tropical depth that feel cinematic and unforgettable.',
+     desc:'Shift from greenery to sea views, scenic lookouts and adventurous terrain on a more elevated island journey.',
+     stats:[['Best for','Scenery + romance'],['Mood','Dramatic & intimate'],['Best light','Early morning to golden hour'],['Signature','Pitons & scenic drives']],
+     spots:[
+       {icon:'fas fa-route',label:'Scenic Route',x:27,y:65,price:'from $145',ok:1,blurb:'Soufriere drives with sweeping Pitons viewpoints and photo stops.'},
+       {icon:'fas fa-camera',label:'Viewpoint',x:57,y:35,price:'from $75',ok:0,blurb:'Aerial tram and rainforest lookouts for a softer adventure day.'},
+       {icon:'fas fa-leaf',label:'Rainforest',x:80,y:57,price:'from $110',ok:1,blurb:'Sulphur Springs mud baths and the cool drop of Toraille Falls.'}
+     ]},
+    {id:'bahamas',tab:'Bahamas',kicker:'Water Preview',title:'Bahamas Blue',
+     capOver:'Ocean Escape',state:'Recorded Preview',projection:'flat',
+     img:'photo-1548574505-5e239809ee19',
+     capText:'Crystal-clear water, floating moments and bright open space that feel playful and airy.',
+     desc:'Preview turquoise water, island hops and bucket-list boat moments with a light, cheerful rhythm.',
+     stats:[['Best for','Ocean + bucket list'],['Mood','Playful & sun-soaked'],['Best light','Midday to late afternoon'],['Signature','Boat day & sandbar']],
+     spots:[
+       {icon:'fas fa-water',label:'Turquoise Water',x:24,y:60,price:'from $79',ok:1,blurb:'Rose Island swimming pigs and clear, calm shallows.'},
+       {icon:'fas fa-ship',label:'Boat Day',x:62,y:45,price:'from $127',ok:1,blurb:'A three-island hop with snorkel stops and friendly sea turtles.'},
+       {icon:'fas fa-star',label:'Sandbar Stop',x:82,y:69,price:'from $139',ok:0,blurb:'A private beach-club sandbar afternoon with room to float.'}
+     ]}
+  ];
+
+  var stage=document.getElementById('pano360Stage');
+  if(!stage) return;
+  var pan=document.getElementById('pano360Pan');
+  var img=document.getElementById('pano360Img');
+  var posterEl=document.getElementById('pano360Poster');
+  var hotWrap=document.getElementById('pano360Hotspots');
+  var preview=document.getElementById('pano360Preview');
+  var needle=document.getElementById('pano360Needle');
+  var hint=document.getElementById('pano360Hint');
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  var LAYER_W=1.7, LAYER_H=1.42;   // pan layer is larger than the stage → room to look around
+  var current=0, zoom=1;
+  var panX=0, panY=0, minX=0, minY=0, vX=0, vY=0;
+  var dragging=false, lastX=0, lastY=0, moved=false, pid=null;
+  var autoSpin=false, spinDir=-1, interacted=false, inView=false, revealDone=false;
+
+  function clamp(v,a,b){return v<a?a:(v>b?b:v);}
+
+  function dims(){
+    var W=stage.clientWidth, H=stage.clientHeight;
+    var lw=W*LAYER_W*zoom, lh=H*LAYER_H*zoom;
+    return {W:W,H:H,lw:lw,lh:lh};
+  }
+  function applyLayer(){
+    var d=dims();
+    pan.style.width=d.lw+'px';
+    pan.style.height=d.lh+'px';
+    minX=d.W-d.lw; minY=d.H-d.lh;
+    panX=clamp(panX,minX,0); panY=clamp(panY,minY,0);
+    draw();
+  }
+  function draw(){
+    pan.style.transform='translate3d('+panX+'px,'+panY+'px,0)';
+    // compass: map horizontal position to a heading
+    var frac = minX<0 ? (panX-minX)/(0-minX) : .5;   // 0 (right-most) .. 1 (left-most)
+    var deg = (frac-0.5)*120;
+    if(needle) needle.style.transform='translate(-50%,-100%) rotate('+deg+'deg)';
+  }
+  function centerView(){
+    var d=dims();
+    panX=(d.W-d.lw)/2; panY=(d.H-d.lh)/2;
+    applyLayer();
+  }
+
+  function setText(id,t){var e=document.getElementById(id);if(e)e.textContent=t;}
+
+  function renderStop(i){
+    current=i; var s=STOPS[i]; if(!s)return;
+    hidePreview();
+    // poster first for instant paint, then the full image
+    posterEl.style.backgroundImage="url('"+poster(s.img)+"')";
+    posterEl.classList.remove('hide');
+    var full=new Image();
+    full.onload=function(){ img.src=full.src; posterEl.classList.add('hide'); };
+    full.src=wide(s.img);
+    img.alt=s.title+' 360 degree preview';
+
+    // media state
+    var stEl=document.getElementById('pano360State');
+    stEl.setAttribute('data-state',s.state);
+    setText('pano360StateText',s.state);
+    setText('pano360StopLabel',s.title);
+
+    // caption + panel
+    setText('pano360CapOver',s.capOver);
+    setText('pano360CapTitle',s.title);
+    setText('pano360CapText',s.capText);
+    setText('pano360Kicker',s.kicker);
+    setText('pano360Title',s.title);
+    setText('pano360Desc',s.desc);
+    document.getElementById('pano360Stats').innerHTML=s.stats.map(function(st){
+      return '<div class="pano360-stat"><span>'+st[0]+'</span><strong>'+st[1]+'</strong></div>';
+    }).join('');
+
+    // spatial hotspots
+    hotWrap.innerHTML=s.spots.map(function(sp,idx){
+      return '<button type="button" class="pano360-hotspot" data-i="'+idx+'" style="left:'+sp.x+'%;top:'+sp.y+'%" '
+        +'aria-label="'+sp.label+', '+sp.price+'">'
+        +'<span class="pano360-hs-dot"><i class="'+sp.icon+'"></i></span>'
+        +'<span class="pano360-hs-tag">'+sp.label+' · <b>'+sp.price+'</b></span></button>';
+    }).join('');
+
+    // accessible equivalent stop list
+    document.getElementById('pano360StopList').innerHTML=s.spots.map(function(sp,idx){
+      return '<li><button type="button" class="pano360-stopitem" data-i="'+idx+'">'
+        +'<span class="ic"><i class="'+sp.icon+'"></i></span>'
+        +'<span class="tx"><b>'+sp.label+'</b><small>'+(sp.ok?'Bookable now':'Scheduled sessions')+'</small></span>'
+        +'<span class="pr">'+sp.price+'</span></button></li>';
+    }).join('');
+
+    centerView();
+    // a gentle reveal pan to signal the scene is draggable (skipped if reduced motion)
+    if(revealDone && !reduce){ nudge(); }
+  }
+
+  function nudge(){
+    var d=dims(); if(d.lw<=d.W) return;
+    var start=panX, target=clamp(panX - Math.min(90,(0-minX)*.18), minX, 0);
+    var t0=null, dur=900;
+    function step(ts){
+      if(t0===null)t0=ts;
+      var p=Math.min(1,(ts-t0)/dur);
+      var e=1-Math.pow(1-p,3);
+      panX=start+(target-start)*e; draw();
+      if(p<1 && !dragging && !interacted) requestAnimationFrame(step);
+      else { // settle back
+        var s2=panX, t2=null;
+        function back(ts2){ if(t2===null)t2=ts2; var q=Math.min(1,(ts2-t2)/dur); var e2=1-Math.pow(1-q,3); panX=s2+((d.W-d.lw)/2 - s2)*e2; draw(); if(q<1 && !dragging && !interacted) requestAnimationFrame(back); }
+        if(!dragging && !interacted) requestAnimationFrame(back);
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  // ---- Hotspot / preview ----
+  function panToSpot(idx,focusCard){
+    var s=STOPS[current]; var sp=s.spots[idx]; if(!sp)return;
+    var d=dims();
+    var hx=(sp.x/100)*d.lw, hy=(sp.y/100)*d.lh;
+    animateTo(clamp(d.W/2-hx,minX,0), clamp(d.H/2-hy,minY,0), function(){ openPreview(idx,focusCard); });
+    hotWrap.querySelectorAll('.pano360-hotspot').forEach(function(h){ h.classList.toggle('active', +h.dataset.i===idx); });
+  }
+  function animateTo(tx,ty,done){
+    interacted=true; hideHint();
+    if(reduce){ panX=tx; panY=ty; draw(); if(done)done(); return; }
+    var sx=panX, sy=panY, t0=null, dur=480;
+    function step(ts){ if(t0===null)t0=ts; var p=Math.min(1,(ts-t0)/dur); var e=1-Math.pow(1-p,3);
+      panX=sx+(tx-sx)*e; panY=sy+(ty-sy)*e; draw();
+      if(p<1) requestAnimationFrame(step); else if(done) done(); }
+    requestAnimationFrame(step);
+  }
+  function openPreview(idx,focusCard){
+    var sp=STOPS[current].spots[idx]; if(!sp)return;
+    preview.innerHTML=''
+      +'<div class="pano360-preview-top"><span class="pano360-preview-eyebrow">Point of interest</span>'
+      +'<button type="button" class="pano360-preview-close" id="pano360PvClose" aria-label="Close">&times;</button></div>'
+      +'<h5>'+sp.label+'</h5><p>'+sp.blurb+'</p>'
+      +'<div class="pano360-preview-meta"><span class="pano360-preview-price">'+sp.price+'</span>'
+      +'<span class="pano360-chip" data-ok="'+sp.ok+'">'+(sp.ok?'Bookable now':'Scheduled')+'</span></div>'
+      +'<div class="pano360-preview-act"><button type="button" class="primary" data-go="booking"><i class="fas fa-paper-plane"></i> Plan this stop</button>'
+      +'<button type="button" class="ghost" data-go="tours">See experiences</button></div>';
+    preview.classList.add('show');
+    var cl=document.getElementById('pano360PvClose'); if(cl) cl.addEventListener('click',hidePreview);
+    preview.querySelectorAll('[data-go]').forEach(function(b){ b.addEventListener('click',function(){ if(window.nav) nav(b.dataset.go); }); });
+    if(focusCard && cl) cl.focus();
+  }
+  function hidePreview(){
+    preview.classList.remove('show');
+    hotWrap.querySelectorAll('.pano360-hotspot').forEach(function(h){ h.classList.remove('active'); });
+  }
+
+  function hideHint(){ if(hint && !hint.classList.contains('hide')) hint.classList.add('hide'); }
+
+  // ---- Pointer drag + inertia ----
+  function onDown(e){
+    dragging=true; moved=false; interacted=true; autoSpin=false; setSpinBtn();
+    stage.classList.add('dragging'); hideHint();
+    lastX=e.clientX; lastY=e.clientY; vX=0; vY=0;
+    pid=e.pointerId; try{stage.setPointerCapture(pid);}catch(_){ }
+  }
+  function onMove(e){
+    if(!dragging)return;
+    var dx=e.clientX-lastX, dy=e.clientY-lastY;
+    if(Math.abs(dx)+Math.abs(dy)>3) moved=true;
+    lastX=e.clientX; lastY=e.clientY; vX=dx; vY=dy;
+    panX=clamp(panX+dx,minX,0); panY=clamp(panY+dy,minY,0); draw();
+    e.preventDefault();
+  }
+  function onUp(){
+    if(!dragging)return;
+    dragging=false; stage.classList.remove('dragging');
+    if(pid!==null){ try{stage.releasePointerCapture(pid);}catch(_){ } pid=null; }
+    if(!reduce) inertia();
+  }
+  function inertia(){
+    if(dragging) return;
+    if(Math.abs(vX)<0.4 && Math.abs(vY)<0.4) return;
+    panX=clamp(panX+vX,minX,0); panY=clamp(panY+vY,minY,0); draw();
+    vX*=0.93; vY*=0.93;
+    requestAnimationFrame(inertia);
+  }
+
+  stage.addEventListener('pointerdown',onDown);
+  stage.addEventListener('pointermove',onMove);
+  stage.addEventListener('pointerup',onUp);
+  stage.addEventListener('pointercancel',onUp);
+  stage.addEventListener('pointerleave',function(){ if(dragging) onUp(); });
+
+  // click a hotspot (only when it wasn't a drag)
+  hotWrap.addEventListener('click',function(e){
+    var btn=e.target.closest('.pano360-hotspot'); if(!btn)return;
+    if(moved){ moved=false; return; }
+    panToSpot(+btn.dataset.i,false);
+  });
+  // accessible stop list
+  document.getElementById('pano360StopList').addEventListener('click',function(e){
+    var btn=e.target.closest('.pano360-stopitem'); if(!btn)return;
+    panToSpot(+btn.dataset.i,true);
+  });
+
+  // keyboard look-around + escape
+  stage.addEventListener('keydown',function(e){
+    var step=50; var used=true;
+    if(e.key==='ArrowLeft') panX=clamp(panX+step,minX,0);
+    else if(e.key==='ArrowRight') panX=clamp(panX-step,minX,0);
+    else if(e.key==='ArrowUp') panY=clamp(panY+step,minY,0);
+    else if(e.key==='ArrowDown') panY=clamp(panY-step,minY,0);
+    else if(e.key==='Escape'){ hidePreview(); used=true; }
+    else used=false;
+    if(used){ interacted=true; hideHint(); autoSpin=false; setSpinBtn(); draw(); e.preventDefault(); }
+  });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') hidePreview(); });
+
+  // ---- Zoom helpers kept available via reset; dock buttons ----
+  function setZoom(z){
+    var d0=dims();
+    var fx=(d0.W/2-panX)/d0.lw, fy=(d0.H/2-panY)/d0.lh;
+    zoom=clamp(z,1,2.2);
+    var d=dims();
+    pan.style.width=d.lw+'px'; pan.style.height=d.lh+'px';
+    minX=d.W-d.lw; minY=d.H-d.lh;
+    panX=clamp(d.W/2-fx*d.lw,minX,0); panY=clamp(d.H/2-fy*d.lh,minY,0);
+    draw();
+  }
+
+  // ---- Controls ----
+  document.getElementById('pano360Reset').addEventListener('click',function(){
+    interacted=true; hidePreview(); zoom=1; centerView();
+  });
+  function setSpinBtn(){ var b=document.getElementById('pano360Spin'); if(b) b.setAttribute('aria-pressed',autoSpin?'true':'false'); }
+  document.getElementById('pano360Spin').addEventListener('click',function(){
+    if(reduce){ return; }
+    autoSpin=!autoSpin; setSpinBtn(); if(autoSpin){ interacted=true; hideHint(); spinLoop(); }
+  });
+  function spinLoop(){
+    if(!autoSpin||dragging){ return; }
+    var d=dims();
+    if(d.lw>d.W){
+      panX+=spinDir*0.35;
+      if(panX<=minX){ panX=minX; spinDir=1; }
+      else if(panX>=0){ panX=0; spinDir=-1; }
+      draw();
+    }
+    requestAnimationFrame(spinLoop);
+  }
+  document.getElementById('pano360Full').addEventListener('click',function(){
+    var fs=document.fullscreenElement||document.webkitFullscreenElement;
+    if(fs){ (document.exitFullscreen||document.webkitExitFullscreen).call(document); }
+    else { (stage.requestFullscreen||stage.webkitRequestFullscreen).call(stage); }
+  });
+  function onFsChange(){
+    var fs=document.fullscreenElement||document.webkitFullscreenElement;
+    var ic=document.querySelector('#pano360Full i');
+    if(ic) ic.className=fs?'fas fa-compress':'fas fa-expand';
+    setTimeout(applyLayer,60);
+  }
+  document.addEventListener('fullscreenchange',onFsChange);
+  document.addEventListener('webkitfullscreenchange',onFsChange);
+
+  // ---- Tabs ----
+  var tabsEl=document.getElementById('pano360Tabs');
+  tabsEl.innerHTML=STOPS.map(function(s,i){
+    return '<button type="button" class="pano360-tab'+(i===0?' active':'')+'" role="tab" data-i="'+i+'" aria-selected="'+(i===0)+'">'+s.tab+'</button>';
+  }).join('');
+  tabsEl.addEventListener('click',function(e){
+    var b=e.target.closest('.pano360-tab'); if(!b)return;
+    tabsEl.querySelectorAll('.pano360-tab').forEach(function(t){ t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+    b.classList.add('active'); b.setAttribute('aria-selected','true');
+    interacted=false; // allow a fresh reveal nudge on the new scene
+    renderStop(+b.dataset.i);
+  });
+
+  // ---- Resize ----
+  var rT; window.addEventListener('resize',function(){ clearTimeout(rT); rT=setTimeout(applyLayer,120); });
+
+  // ---- Start when scrolled into view (perf + good first impression) ----
+  function boot(){
+    renderStop(0);
+    revealDone=true;
+    if('IntersectionObserver' in window){
+      var io=new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          inView=en.isIntersecting;
+          if(inView && !interacted && !reduce){ nudge(); }
+        });
+      },{threshold:.35});
+      io.observe(stage);
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot);
+  else boot();
+})();
+</script>
+</section>
+
 <!-- ABOUT -->
 <!-- TOURS FILTER -->
 
