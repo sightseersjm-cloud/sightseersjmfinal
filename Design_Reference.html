@@ -671,6 +671,26 @@ button{font-family:'Raleway',sans-serif;cursor:pointer}
 .pd-thumb{width:80px;height:80px;object-fit:cover;border:2px solid var(--border);cursor:pointer;transition:border-color .2s}
 .pd-thumb.active,.pd-thumb:hover{border-color:var(--orange)}
 .pd-info{}
+.pd-storefront{margin:24px 0 4px;border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.pd-sf-head{display:flex;align-items:center;gap:9px;padding:13px 16px;background:rgba(6,58,99,.04);border-bottom:1px solid var(--border);font-size:11px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--navy)}
+.pd-sf-head i{color:var(--orange)}
+.pd-sf-provenance{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)}
+.pd-sf-prov{background:#fff;padding:12px 16px}
+.pd-sf-prov span{display:block;font-size:9.5px;font-weight:800;letter-spacing:1.1px;text-transform:uppercase;color:var(--grey);margin-bottom:4px}
+.pd-sf-prov strong{font-size:12.5px;font-weight:700;color:var(--navy);line-height:1.35}
+.pd-sf-stock{display:inline-flex;align-items:center;gap:7px}
+.pd-sf-stock .sf-dot{width:7px;height:7px;border-radius:50%;background:#2f9e5e;box-shadow:0 0 8px rgba(47,158,94,.55)}
+.pd-sf-stock[data-ok="0"] .sf-dot{background:var(--orange);box-shadow:none}
+.pd-sf-fees{padding:14px 16px;border-top:1px solid var(--border)}
+.pd-sf-fees-title{font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--grey);margin-bottom:10px}
+.pd-sf-row{display:flex;align-items:center;justify-content:space-between;font-size:12.5px;color:#2e4257;padding:4px 0}
+.pd-sf-row span:last-child{font-weight:700;color:var(--navy)}
+.pd-sf-row.total{margin-top:6px;padding-top:10px;border-top:1px dashed var(--border);font-weight:800}
+.pd-sf-row.total span{font-size:14px;color:var(--navy)}
+.pd-sf-fineprint{font-size:10.5px;line-height:1.5;color:var(--grey);margin-top:9px}
+.pd-sf-fulfill{display:flex;flex-wrap:wrap;gap:8px;padding:0 16px 15px}
+.pd-sf-chip{display:inline-flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;color:var(--navy);background:rgba(6,58,99,.05);border:1px solid var(--border);border-radius:999px;padding:7px 12px}
+.pd-sf-chip i{color:var(--orange);font-size:11px}
 .pd-name{font-size:2rem;font-weight:800;color:var(--navy);margin-bottom:8px;line-height:1.2}
 .pd-rating-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
 .pd-stars{color:#f5c842;font-size:14px}
@@ -10483,6 +10503,101 @@ body.theme-night .page .tag{
 </script>
 </section>
 
+<!-- ======== MEMBERSHIP & ACCESS TIERS ======== -->
+<section class="mtier-sec" id="membershipSec" aria-labelledby="mtierHeading">
+<style>
+.mtier-sec{padding:92px 0;background:linear-gradient(180deg,#f6fbff 0%,#eef6f6 100%);position:relative;overflow:hidden}
+.mtier-sec::before{content:'';position:absolute;right:-120px;top:-90px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(245,121,59,.12),transparent 70%);pointer-events:none}
+.mtier-wrap{max-width:1240px;margin:0 auto;padding:0 30px;position:relative;z-index:1}
+.mtier-head{text-align:center;max-width:680px;margin:0 auto 46px}
+.mtier-pre{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:14px}
+.mtier-pre::before,.mtier-pre::after{content:'';width:22px;height:2px;background:var(--orange);border-radius:2px}
+.mtier-head h2{font-family:'Playfair Display',serif;font-size:clamp(2rem,3.4vw,3rem);line-height:1.05;color:var(--navy);font-weight:700;margin-bottom:14px}
+.mtier-head p{font-size:15px;line-height:1.8;color:var(--grey)}
+.mtier-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.mtier-card{position:relative;display:flex;flex-direction:column;background:#fff;border:1px solid rgba(6,58,99,.1);border-radius:24px;padding:28px 26px;box-shadow:0 18px 44px rgba(6,58,99,.08);transition:transform .24s ease,box-shadow .24s ease,border-color .24s ease}
+.mtier-card:hover{transform:translateY(-4px);box-shadow:0 26px 60px rgba(6,58,99,.14);border-color:rgba(245,121,59,.35)}
+.mtier-card.feature{border-color:var(--orange);box-shadow:0 26px 64px rgba(245,121,59,.2)}
+.mtier-flag{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--orange);color:#fff;font-size:10px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;padding:6px 14px;border-radius:999px;white-space:nowrap;box-shadow:0 8px 20px rgba(245,121,59,.3)}
+.mtier-name{font-size:13px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--navy);margin-bottom:12px}
+.mtier-price{display:flex;align-items:baseline;gap:6px;margin-bottom:4px}
+.mtier-price strong{font-size:2rem;font-weight:800;color:var(--navy);line-height:1}
+.mtier-price span{font-size:12px;font-weight:700;color:var(--grey)}
+.mtier-alt{font-size:11.5px;color:var(--grey);margin-bottom:18px;min-height:16px}
+.mtier-list{list-style:none;margin:0 0 18px;padding:0;display:flex;flex-direction:column;gap:10px;flex:1}
+.mtier-list li{display:flex;align-items:flex-start;gap:9px;font-size:12.5px;line-height:1.5;color:#2e4257}
+.mtier-list li i{color:#2f9e5e;font-size:12px;margin-top:2px;flex:0 0 auto}
+.mtier-limit{font-size:11px;line-height:1.55;color:var(--grey);background:rgba(6,58,99,.04);border:1px solid rgba(6,58,99,.07);border-radius:12px;padding:11px 12px;margin-bottom:18px}
+.mtier-limit b{color:var(--navy);font-weight:800}
+.mtier-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:48px;border-radius:14px;font-size:12.5px;font-weight:800;letter-spacing:.4px;cursor:pointer;border:1px solid rgba(6,58,99,.16);background:#fff;color:var(--navy);transition:transform .16s ease,background .16s ease,color .16s ease}
+.mtier-btn:hover{transform:translateY(-1px);background:var(--navy);color:#fff;border-color:var(--navy)}
+.mtier-card.feature .mtier-btn{background:var(--orange);color:#fff;border-color:transparent}
+.mtier-card.feature .mtier-btn:hover{background:#e0632a}
+.mtier-pass{margin-top:26px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;background:linear-gradient(120deg,#071d26,#0d3a4c);border-radius:22px;padding:24px 30px;color:#fff;box-shadow:0 22px 54px rgba(6,33,46,.3)}
+.mtier-pass-tx h4{font-size:17px;font-weight:800;margin:0 0 6px}
+.mtier-pass-tx p{font-size:12.5px;line-height:1.6;color:rgba(255,255,255,.8);margin:0;max-width:560px}
+.mtier-pass-btn{display:inline-flex;align-items:center;gap:9px;min-height:48px;padding:0 22px;border-radius:14px;background:#2EF2CF;color:#04231c;font-size:12.5px;font-weight:800;letter-spacing:.4px;border:none;cursor:pointer;white-space:nowrap;transition:transform .16s ease}
+.mtier-pass-btn:hover{transform:translateY(-1px)}
+.mtier-note{text-align:center;font-size:11.5px;color:var(--grey);margin-top:20px}
+@media (max-width:980px){.mtier-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.mtier-sec{padding:64px 0}.mtier-wrap{padding:0 18px}.mtier-grid{grid-template-columns:1fr}.mtier-pass{flex-direction:column;align-items:flex-start;text-align:left}}
+</style>
+<div class="mtier-wrap">
+  <div class="mtier-head">
+    <span class="mtier-pre">Membership &amp; Access</span>
+    <h2 id="mtierHeading">Choose how you explore</h2>
+    <p>Browse destinations and save itineraries for free. Step up to live hosted sessions, private guided previews, and group production when you are ready to go deeper.</p>
+  </div>
+  <div class="mtier-grid" id="mtierGrid"></div>
+  <div class="mtier-pass">
+    <div class="mtier-pass-tx">
+      <h4>One-time 30-day trip-planning pass</h4>
+      <p>Caribbean vacation planning is episodic. Unlock full access for a single trip — replays, member programming and planning tools — without a recurring membership.</p>
+    </div>
+    <button type="button" class="mtier-pass-btn" onclick="nav('booking')"><i class="fas fa-ticket-alt"></i> Get the 30-day pass</button>
+  </div>
+  <p class="mtier-note">Prices are planning assumptions in USD. Live participation requires an admission entitlement. Final pricing is confirmed at checkout.</p>
+</div>
+<script>
+(function(){
+  "use strict";
+  var TIERS=[
+    {name:'Guest Explorer',price:'Free',unit:'',alt:'Always free',feature:false,cta:'Create free account',go:'account',
+     included:['Destination previews & 360° tours','Full public catalog','Itinerary saving','Standard availability searches'],
+     limit:'Live participation requires an admission entitlement.'},
+    {name:'V-Tours Club',price:'$19.99',unit:'/month',alt:'or $199/year',feature:true,cta:'Join the club',go:'account',
+     included:['Replay library access','One standard public-session seat monthly','Member-only programming','Everything in Guest Explorer'],
+     limit:'Excludes private hosts and bespoke production.'},
+    {name:'Household Watch Room',price:'$49',unit:'/month',alt:'or $499/year',feature:false,cta:'Start a Watch Room',go:'account',
+     included:['Four admissions to one public session monthly','Synchronized room for up to eight invitees','Shared shortlist & itinerary','Private group conversation'],
+     limit:'Additional viewers need their own admissions.'},
+    {name:'VIP Guided Preview',price:'$95–175',unit:'/session',alt:'Priced by preparation',feature:false,cta:'Request a preview',go:'booking',
+     included:['45–60 minutes with a dedicated guide','Tailored craft, villa or vehicle questions','Personalised planning handoff','Choice of destination focus'],
+     limit:'Price depends on preparation and location requirements.'},
+    {name:'Corporate / Group',price:'$599–1,499',unit:'/event',alt:'Up to 30 participants',feature:false,cta:'Plan an event',go:'booking',
+     included:['Dedicated producer','Structured Q&A for up to 30 guests','Selected destination assets','Planning handoff & recording options'],
+     limit:'Define attendee count, recording rights and duration in the quote.'},
+    {name:'Travel Advisor Workspace',price:'From $299',unit:'/month',alt:'For five staff seats',feature:false,cta:'Talk to our team',go:'partners',
+     included:['Branded client rooms','Itinerary collaboration','Supplier assets library','Lead reporting'],
+     limit:'Live guide production is charged separately.'}
+  ];
+  var grid=document.getElementById('mtierGrid');
+  if(!grid) return;
+  grid.innerHTML=TIERS.map(function(t){
+    return '<div class="mtier-card'+(t.feature?' feature':'')+'">'
+      +(t.feature?'<span class="mtier-flag">Most popular</span>':'')
+      +'<div class="mtier-name">'+t.name+'</div>'
+      +'<div class="mtier-price"><strong>'+t.price+'</strong>'+(t.unit?'<span>'+t.unit+'</span>':'')+'</div>'
+      +'<div class="mtier-alt">'+(t.alt||'')+'</div>'
+      +'<ul class="mtier-list">'+t.included.map(function(i){return '<li><i class="fas fa-check-circle"></i><span>'+i+'</span></li>';}).join('')+'</ul>'
+      +'<div class="mtier-limit"><b>Good to know:</b> '+t.limit+'</div>'
+      +'<button type="button" class="mtier-btn" onclick="nav(\''+t.go+'\')">'+t.cta+' <i class="fas fa-arrow-right"></i></button>'
+      +'</div>';
+  }).join('');
+})();
+</script>
+</section>
+
 <!-- ABOUT -->
 <!-- TOURS FILTER -->
 
@@ -11455,6 +11570,7 @@ body.theme-night .page .tag{
           <button class="pd-add-btn" id="pdAddBtn" onclick="addToCart()"><i class="fas fa-shopping-bag"></i>Add to Cart</button>
         </div>
         <div class="pd-meta" id="pdMeta"></div>
+        <div class="pd-storefront" id="pdStorefront"></div>
         <div class="pd-tabs">
           <div class="pd-tab-nav">
             <button class="pd-tab-btn on" onclick="switchTab(this,'desc')">Description</button>
@@ -14555,8 +14671,8 @@ let activeStayCountry='Jamaica';
 const PRODUCTS=[
   {id:1,name:'Sight Seers Adventure Hat',cat:'Apparel',type:'apparel',price:28,oldPrice:35,img:'https://images.unsplash.com/photo-1521369909029-2afed882baee?w=500&q=80',imgs:['https://images.unsplash.com/photo-1521369909029-2afed882baee?w=700&q=80','https://images.unsplash.com/photo-1572307480813-ceb0e59d8325?w=700&q=80','https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=700&q=80'],badge:'Sale',reviews:'(24 reviews)',desc:'The iconic Sight Seers Adventure Hat — crafted for island explorers. Lightweight, breathable, and UV-protective fabric keeps you cool on every excursion. Adjustable strap for the perfect fit.',meta:'SKU: SSH-001 · Category: Apparel · Tags: Hat, Adventure, Travel'},
   {id:2,name:'Caribbean Explorer Tee',cat:'Apparel',type:'apparel',price:32,oldPrice:null,img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500&q=80',imgs:['https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=700&q=80','https://images.unsplash.com/photo-1562157873-818bc0726f68?w=700&q=80'],badge:'New',reviews:'(16 reviews)',desc:'Premium cotton tee with the iconic Sight Seers Caribbean Adventures logo. Comfortable, durable, and styled for the island explorer in you.',meta:'SKU: SST-002 · Category: Apparel · Tags: T-Shirt, Caribbean, Explorer'},
-  {id:3,name:'Adventure Dry Bag 20L',cat:'gear',type:'gear',price:55,oldPrice:70,img:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&q=80',imgs:['https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=700&q=80','https://images.unsplash.com/photo-1596942517892-e4b1a8d00e0f?w=700&q=80'],badge:'Sale',reviews:'(38 reviews)',desc:'Keep your gear dry on every water adventure. This 20L roll-top dry bag is waterproof, durable, and floats. Essential for kayaking, snorkeling, and beach trips.',meta:'SKU: SDB-003 · Category: Gear · Tags: Waterproof, Dry Bag, Kayaking'},
-  {id:4,name:'Caribbean Snorkel Set',cat:'gear',type:'gear',price:48,oldPrice:null,img:'https://images.unsplash.com/photo-1559829604-53b7ebdfe491?w=500&q=80',imgs:['https://images.unsplash.com/photo-1559829604-53b7ebdfe491?w=700&q=80'],badge:'Popular',reviews:'(52 reviews)',desc:'Professional-grade snorkel set includes tempered glass mask, dry-top snorkel, and adjustable fins. Crystal-clear underwater visibility for every reef adventure.',meta:'SKU: SSN-004 · Category: Gear · Tags: Snorkel, Diving, Beach'},
+  {id:3,name:'Adventure Dry Bag 20L',cat:'gear',type:'gear',price:55,oldPrice:70,img:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&q=80',imgs:['https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=700&q=80','https://images.unsplash.com/photo-1596942517892-e4b1a8d00e0f?w=700&q=80'],badge:'Sale',reviews:'(38 reviews)',desc:'Keep your gear dry on every water adventure. This 20L roll-top dry bag is waterproof, durable, and floats. Essential for kayaking, snorkeling, and beach trips.',meta:'SKU: SDB-003 · Category: Gear · Tags: Waterproof, Dry Bag, Kayaking',storefront:{maker:'Sight Seers Caribbean',origin:'Designed in Jamaica',materials:'500D PVC tarpaulin, welded seams',dimensions:'54 × 30 cm · 20 L capacity',weight:'0.38 kg',stock:36,packing:4,delivery:6}},
+  {id:4,name:'Caribbean Snorkel Set',cat:'gear',type:'gear',price:48,oldPrice:null,img:'https://images.unsplash.com/photo-1559829604-53b7ebdfe491?w=500&q=80',imgs:['https://images.unsplash.com/photo-1559829604-53b7ebdfe491?w=700&q=80'],badge:'Popular',reviews:'(52 reviews)',desc:'Professional-grade snorkel set includes tempered glass mask, dry-top snorkel, and adjustable fins. Crystal-clear underwater visibility for every reef adventure.',meta:'SKU: SSN-004 · Category: Gear · Tags: Snorkel, Diving, Beach',storefront:{maker:'Sight Seers Caribbean',origin:'Reef-safe island kit',materials:'Tempered glass, silicone, TPR fins',dimensions:'Mask, dry-top snorkel & adjustable fins',weight:'1.1 kg set',stock:18,packing:5,delivery:6}},
   {id:5,name:'Island Vibes Bracelet',cat:'accessories',type:'accessories',price:18,oldPrice:null,img:'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&q=80',imgs:['https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=700&q=80'],badge:null,reviews:'(29 reviews)',desc:'Hand-crafted bracelet inspired by the Caribbean\'s vibrant colors. Adjustable cord with a compass charm. The perfect travel keepsake or gift for a fellow adventurer.',meta:'SKU: SIB-005 · Category: Accessories · Tags: Bracelet, Caribbean, Gift'},
   {id:6,name:'Travel Neck Pouch',cat:'accessories',type:'accessories',price:22,oldPrice:28,img:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&q=80',imgs:['https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=700&q=80'],badge:'Sale',reviews:'(41 reviews)',desc:'RFID-blocking travel neck pouch keeps your passport, cash, and cards secure under your clothing. Lightweight, slim, and water-resistant.',meta:'SKU: SNP-006 · Category: Accessories · Tags: Travel, Security, RFID'},
   {id:7,name:'Caribbean Adventure Tote',cat:'accessories',type:'accessories',price:38,oldPrice:null,img:'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500&q=80',imgs:['https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=700&q=80'],badge:'New',reviews:'(11 reviews)',desc:'Spacious canvas tote with the Sight Seers logo. Perfect for beach days, market visits, and island exploring. Machine washable.',meta:'SKU: SAT-007 · Category: Accessories · Tags: Tote, Canvas, Beach'},
@@ -15277,6 +15393,53 @@ function filterShop(btn,f){
   initReveal();
 }
 
+function renderStorefront(p){
+  const el=document.getElementById('pdStorefront'); if(!el) return;
+  const sf=p.storefront||{};
+  const skuM=(p.meta||'').match(/SKU:\s*([A-Za-z0-9-]+)/);
+  const sku=sf.sku||(skuM?skuM[1]:'SSC-'+String(p.id).padStart(3,'0'));
+  const matByType={apparel:'Performance cotton blend',gear:'Weather-resistant technical build',accessories:'Durable mixed materials',gifts:'Digital gift card'};
+  const maker=sf.maker||'Sight Seers Caribbean';
+  const origin=sf.origin||'Designed in Jamaica';
+  const materials=sf.materials||matByType[p.type]||'Quality materials';
+  const stock=(sf.stock!=null)?sf.stock:24;
+  const ok=stock>0;
+  const today=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  const item=Number(p.price)||0;
+  const service=Math.max(3,Math.round(item*0.12*100)/100);
+  const packing=(sf.packing!=null)?sf.packing:4;
+  const delivery=(sf.delivery!=null)?sf.delivery:6;
+  const total=Math.round((item+service+packing+delivery)*100)/100;
+  const money=function(n){return '$'+n.toFixed(2);};
+  const dimRow=sf.dimensions?'<div class="pd-sf-prov"><span>Dimensions</span><strong>'+sf.dimensions+'</strong></div>':'';
+  const wtRow=sf.weight?'<div class="pd-sf-prov"><span>Weight</span><strong>'+sf.weight+'</strong></div>':'';
+  el.innerHTML=
+    '<div class="pd-sf-head"><i class="fas fa-certificate"></i> Storefront details</div>'
+    +'<div class="pd-sf-provenance">'
+      +'<div class="pd-sf-prov"><span>Maker</span><strong>'+maker+'</strong></div>'
+      +'<div class="pd-sf-prov"><span>Origin</span><strong>'+origin+'</strong></div>'
+      +'<div class="pd-sf-prov"><span>Materials</span><strong>'+materials+'</strong></div>'
+      +'<div class="pd-sf-prov"><span>SKU</span><strong>'+sku+'</strong></div>'
+      +dimRow+wtRow
+      +'<div class="pd-sf-prov"><span>Availability</span><strong class="pd-sf-stock" data-ok="'+(ok?1:0)+'"><span class="sf-dot"></span>'+(ok?('In stock · '+stock+' available'):'Made to order')+'</strong></div>'
+      +'<div class="pd-sf-prov"><span>Stock checked</span><strong>'+today+'</strong></div>'
+    +'</div>'
+    +'<div class="pd-sf-fees">'
+      +'<div class="pd-sf-fees-title">Transparent pricing</div>'
+      +'<div class="pd-sf-row"><span>Item price (to maker)</span><span>'+money(item)+'</span></div>'
+      +'<div class="pd-sf-row"><span>Service fee (12%, min $3)</span><span>'+money(service)+'</span></div>'
+      +'<div class="pd-sf-row"><span>Packing</span><span>'+money(packing)+'</span></div>'
+      +'<div class="pd-sf-row"><span>Delivery (from)</span><span>'+money(delivery)+'</span></div>'
+      +'<div class="pd-sf-row total"><span>Estimated total</span><span>'+money(total)+'</span></div>'
+      +'<div class="pd-sf-fineprint">Service, packing and delivery are shown separately from the maker&#39;s item price. Final totals depend on quantity and chosen fulfillment.</div>'
+    +'</div>'
+    +'<div class="pd-sf-fulfill">'
+      +'<span class="pd-sf-chip"><i class="fas fa-globe-americas"></i> Ship internationally</span>'
+      +'<span class="pd-sf-chip"><i class="fas fa-hotel"></i> Hotel / villa delivery</span>'
+      +'<span class="pd-sf-chip"><i class="fas fa-store"></i> Local pickup</span>'
+    +'</div>';
+}
+
 function openProduct(id){
   const p=PRODUCTS.find(x=>x.id===id);if(!p)return;
   if(p.type==='gifts'){nav('giftcards');return;}
@@ -15291,6 +15454,7 @@ function openProduct(id){
   document.getElementById('pdOldPrice').textContent=p.oldPrice?'$'+p.oldPrice.toFixed(2):'';
   document.getElementById('pdDesc').textContent=p.desc;
   document.getElementById('pdMeta').innerHTML=p.meta.split(' · ').map(m=>`<span><strong>${m.split(': ')[0]}:</strong> ${m.split(': ')[1]}</span><br>`).join('');
+  renderStorefront(p);
   document.getElementById('tab-desc').innerHTML='<p>'+p.desc+'</p>';
   document.getElementById('pdQty').value=1;
   document.getElementById('pdAddBtn').innerHTML='<i class="fas fa-shopping-bag"></i>Add to Cart';
