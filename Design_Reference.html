@@ -1480,6 +1480,10 @@ button{font-family:'Raleway',sans-serif;cursor:pointer}
 .tc-price-pill{display:inline-flex;align-items:center;justify-content:center;padding:10px 16px;background:#fff;color:var(--navy);border-radius:999px;font-size:11px;font-weight:800;letter-spacing:1px;box-shadow:0 10px 24px rgba(0,0,0,.12)}
 .tc-overlay-meta{position:absolute;left:22px;right:22px;bottom:20px;z-index:2;color:#fff}
 .tc-rating-badge{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.12);backdrop-filter:blur(6px);font-size:10px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;margin-bottom:14px}
+.tc-state{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.12);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.22);font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:14px;margin-left:8px;color:#fff;vertical-align:top}
+.tc-state .tcs-dot{width:7px;height:7px;border-radius:50%;background:#70c257;box-shadow:0 0 8px rgba(112,194,87,.85)}
+.tc-state[data-state="Scheduled"] .tcs-dot{background:var(--orange);box-shadow:0 0 8px rgba(245,121,59,.85)}
+.tc-state[data-state="On request"] .tcs-dot{background:#a7bccb;box-shadow:none}
 .tc-rating-badge i{color:#ffd25f}
 .tc-name{font-size:1.45rem;font-weight:800;color:#fff;line-height:1.14;letter-spacing:-.02em;margin-bottom:12px;max-width:88%}
 .tc-name a{color:inherit}
@@ -14992,6 +14996,7 @@ function renderTours(filter,gridId){
     const copy=(t.desc||'').length>118?`${t.desc.slice(0,118).trim()}…`:t.desc;
     const gallery=isMba&&Array.isArray(t.imgs)&&t.imgs.length?`<div class="tc-gallery">${t.imgs.slice(0,3).map((img,idx)=>`<img src="${img}" alt="${t.title} image ${idx+1}" loading="lazy">`).join('')}</div>`:'';
     const primaryLabel=isMba?'View Experience':'View Tour';
+    const state=t.state||(isMba?'Scheduled':(t.price!==null?'Bookable':'On request'));
     const secondaryButton=isMba
       ?`<button class="tour-card-btn alt" onclick="event.stopPropagation();openBookingForTour(${t.id})"><i class="fas fa-briefcase"></i>Reserve / Form</button>`
       :(t.price!==null
@@ -15006,7 +15011,7 @@ function renderTours(filter,gridId){
           <span class="tc-price-pill">${pricePill}</span>
         </div>
         <div class="tc-overlay-meta">
-          <div class="tc-rating-badge"><i class="fas fa-star"></i> ${t.rating} Rating</div>
+          <div class="tc-rating-badge"><i class="fas fa-star"></i> ${t.rating} Rating</div><span class="tc-state" data-state="${state}" title="Booking availability"><span class="tcs-dot"></span>${state}</span>
           <div class="tc-name"><a href="#" onclick="openTour(${t.id});return false;">${t.title}</a></div>
 
         </div>
@@ -35962,6 +35967,10 @@ window.scrollPopularTours=function(dir){
 .curated-tour-badge,.curated-tour-source{position:absolute;z-index:1;top:18px;padding:8px 12px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:1.25px;text-transform:uppercase}
 .curated-tour-badge{left:18px;background:var(--orange);color:#fff}
 .curated-tour-source{right:18px;background:rgba(255,255,255,.92);color:var(--navy)}
+.curated-tour-state{position:absolute;z-index:2;top:18px;right:18px;display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:1.1px;text-transform:uppercase;background:rgba(255,255,255,.93);color:var(--navy);box-shadow:0 8px 20px rgba(6,58,99,.18)}
+.curated-tour-state .cts-dot{width:7px;height:7px;border-radius:50%;background:#2f9e5e;box-shadow:0 0 8px rgba(47,158,94,.6)}
+.curated-tour-state[data-state="On request"]{background:rgba(6,25,45,.72);color:#fff;backdrop-filter:blur(6px)}
+.curated-tour-state[data-state="On request"] .cts-dot{background:var(--orange);box-shadow:0 0 8px rgba(245,121,59,.7)}
 .curated-tour-copy{position:absolute;left:0;right:0;bottom:0;z-index:1;padding:20px;color:#fff}
 .curated-tour-copy h3{font-size:1.28rem;line-height:1.08;margin-bottom:8px;max-width:85%}
 .curated-tour-copy p{font-size:12px;line-height:1.7;color:rgba(255,255,255,.84)}
@@ -36480,6 +36489,8 @@ body.theme-night .page .tag{
     const isPackage = item.type === 'package';
     const isJamaicaPackage = isPackage && item.country === 'Jamaica';
     const hasPrice = Number(item.priceValue||0) > 0;
+    const state = item.state || (hasPrice ? 'Bookable' : 'On request');
+    const stateBadge = `<span class="curated-tour-state" data-state="${state}" title="Booking availability"><span class="cts-dot"></span>${state === 'Bookable' ? 'Bookable now' : 'On request'}</span>`;
     const packageTier = '';
     const primaryAction = (hasPrice && !isPackage)
       ? `<button type="button" class="btn-primary" onclick='addCustomPackageToCart(${JSON.stringify(item.country)}, ${JSON.stringify(item.title)}, ${JSON.stringify(typeLabel)}, ${Number(item.priceValue||0)}, ${JSON.stringify(item.image)}, ${JSON.stringify(note)})'><i class="fas fa-shopping-bag"></i>Add to Cart</button>`
@@ -36494,6 +36505,7 @@ body.theme-night .page .tag{
       <article class="curated-tour-card ${isPackage ? 'is-package' : ''}${isJamaicaPackage ? ' is-jamaica-package' : ''}" data-type="${item.type}" data-country="${item.country}">
         <div class="curated-tour-media">
           <img src="${item.image}" alt="${item.title}" loading="lazy">
+          ${stateBadge}
           <div class="curated-tour-copy">
             <h3>${item.title}</h3>
             <p>${item.hero}</p>
