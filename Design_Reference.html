@@ -10894,6 +10894,114 @@ body.theme-night .page .tag{
   </div>
 </section>
 
+<!-- ======== BARBADOS ITINERARIES ======== -->
+<section class="bdos-itin-sec">
+  <style>
+    .bdos-itin-sec{padding:70px 0;background:var(--lightgrey)}
+    .bdos-itin-wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+    .bdos-itin-head{text-align:center;max-width:720px;margin:0 auto 42px}
+    .bdos-itin-head .sec-pre{color:var(--orange)}
+    .bdos-itin-head p{color:var(--grey);margin-top:12px;font-size:1.02rem;line-height:1.6}
+    .bdos-itin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:26px}
+    .bdos-itin-card{background:var(--white);border:1px solid var(--border);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 10px 30px rgba(6,58,99,.06);transition:transform .25s ease,box-shadow .25s ease}
+    .bdos-itin-card:hover{transform:translateY(-6px);box-shadow:0 18px 44px rgba(6,58,99,.12)}
+    .bdos-itin-top{padding:24px 24px 18px;background:linear-gradient(135deg,var(--navy),var(--dark));color:#fff}
+    .bdos-itin-chip{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.14);margin-bottom:12px}
+    .bdos-itin-card.sea .bdos-itin-chip{background:var(--green);color:#063a1e}
+    .bdos-itin-card.land .bdos-itin-chip{background:var(--orange);color:#4a2708}
+    .bdos-itin-card.mix .bdos-itin-chip{background:#f4fbf6;color:var(--navy)}
+    .bdos-itin-top h3{font-size:1.32rem;line-height:1.25;margin:0 0 6px}
+    .bdos-itin-top span.dur{font-size:.85rem;opacity:.82}
+    .bdos-itin-body{padding:20px 24px 10px;flex:1}
+    .bdos-itin-day{display:flex;gap:14px;padding:14px 0;border-bottom:1px dashed var(--border)}
+    .bdos-itin-day:last-child{border-bottom:none}
+    .bdos-itin-dnum{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem}
+    .bdos-itin-dcopy strong{display:block;color:var(--dark);font-size:.98rem;line-height:1.3}
+    .bdos-itin-dcopy em{display:block;font-style:normal;color:var(--grey);font-size:.82rem;margin-top:3px}
+    .bdos-itin-foot{padding:16px 24px 24px;border-top:1px solid var(--border);margin-top:6px}
+    .bdos-itin-stay{font-size:.82rem;color:var(--grey);margin-bottom:14px}
+    .bdos-itin-stay i{color:var(--orange);margin-right:6px}
+    .bdos-itin-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .bdos-itin-btn{flex:1;min-width:130px;text-align:center;padding:11px 14px;border-radius:999px;font-size:.84rem;font-weight:700;cursor:pointer;border:none;text-decoration:none;transition:opacity .2s ease,background .2s ease}
+    .bdos-itin-btn.primary{background:var(--orange);color:#fff}
+    .bdos-itin-btn.primary:hover{opacity:.9}
+    .bdos-itin-btn.ghost{background:transparent;color:var(--navy);border:1.5px solid var(--border)}
+    .bdos-itin-btn.ghost:hover{border-color:var(--navy)}
+    .bdos-itin-note{text-align:center;color:var(--grey);font-size:.82rem;margin-top:30px}
+  </style>
+  <div class="bdos-itin-wrap">
+    <div class="bdos-itin-head reveal">
+      <span class="sec-pre">Ready-made in Barbados</span>
+      <h2 class="sec-title">Barbados Itineraries</h2>
+      <p>Three ways to shape your days in Barbados — each one built from the tours and stays we already run on the island. Pick a vibe, and we’ll tailor the pace, timing and group size around you.</p>
+    </div>
+    <div class="bdos-itin-grid">
+
+      <div class="bdos-itin-card sea reveal">
+        <div class="bdos-itin-top">
+          <span class="bdos-itin-chip">Water &amp; Beach</span>
+          <h3>Sea &amp; Sail Escape</h3>
+          <span class="dur">3 days · from $235 in excursions</span>
+        </div>
+        <div class="bdos-itin-body">
+          <div class="bdos-itin-day"><div class="bdos-itin-dnum">1</div><div class="bdos-itin-dcopy"><strong>Catamaran Snorkel Cruise with Lunch</strong><em>5 hours · from $115</em></div></div>
+          <div class="bdos-itin-day"><div class="bdos-itin-dnum">2</div><div class="bdos-itin-dcopy"><strong>Carlisle Bay Turtle &amp; Shipwreck Boat Cruise + Beach Day &amp; Turtle Swim</strong><em>1.5 hrs + 6 hrs · from $86</em></div></div>
+          <div class="bdos-itin-day"><div class="bdos-itin-dnum">3</div><div class="bdos-itin-dcopy"><strong>Turtle &amp; Reef Snorkel Cruise</strong><em>Half day · from $85</em></div></div>
+        </div>
+        <div class="bdos-itin-foot">
+          <div class="bdos-itin-stay"><i class="fas fa-bed"></i>Suggested base: West Coast Beach Vacation Rentals</div>
+          <div class="bdos-itin-actions">
+            <a class="bdos-itin-btn primary" href="#" onclick="openLinkedStartPlanning();return false;">Plan this trip</a>
+            <a class="bdos-itin-btn ghost" href="#" onclick="nav('tours');return false;">View tours</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="bdos-itin-card land reveal">
+        <div class="bdos-itin-top">
+          <span class="bdos-itin-chip">Land &amp; Culture</span>
+          <h3>Island &amp; Heritage Trail</h3>
+          <span class="dur">3 days · from $355 in excursions</span>
+        </div>
+        <div class="bdos-itin-body">
+          <div class="bdos-itin-day"><div class="bdos-itin-dnum">1</div><div class="bdos-itin-dcopy"><strong>Island Safari Jeep &amp; Scenic Coast Tour</strong><em>5–6 hours · from $95</em></div></div>
+          <div class="bdos-itin-day"><div class="bdos-itin-dnum">2</div><div class="bdos-itin-dcopy"><strong>Harrison’s Cave &amp; Hunte’s Gardens Escape</strong><em>5 hours · from $155</em></div></div>
+          <div class="bdos-itin-day"><div class="bdos-itin-dnum">3</div><div class="bdos-itin-dcopy"><strong>Mount Gay Rum Distillery Experience</strong><em>5 hours · from $105</em></div></div>
+        </div>
+        <div class="bdos-itin-foot">
+          <div class="bdos-itin-stay"><i class="fas fa-bed"></i>Suggested base: Speightstown Oceanview Villa</div>
+          <div class="bdos-itin-actions">
+            <a class="bdos-itin-btn primary" href="#" onclick="openLinkedStartPlanning();return false;">Plan this trip</a>
+            <a class="bdos-itin-btn ghost" href="#" onclick="nav('tours');return false;">View tours</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="bdos-itin-card mix reveal">
+        <div class="bdos-itin-top">
+          <span class="bdos-itin-chip">Best of Both</span>
+          <h3>Signature Barbados Weekend</h3>
+          <span class="dur">3 days · from $375 in excursions</span>
+        </div>
+        <div class="bdos-itin-body">
+          <div class="bdos-itin-day"><div class="bdos-itin-dnum">1</div><div class="bdos-itin-dcopy"><strong>Catamaran Snorkel Cruise with Lunch</strong><em>5 hours · from $115</em></div></div>
+          <div class="bdos-itin-day"><div class="bdos-itin-dnum">2</div><div class="bdos-itin-dcopy"><strong>Harrison’s Cave &amp; Hunte’s Gardens Escape</strong><em>5 hours · from $155</em></div></div>
+          <div class="bdos-itin-day"><div class="bdos-itin-dnum">3</div><div class="bdos-itin-dcopy"><strong>Mount Gay Rum Distillery + Beach Day &amp; Turtle Swim</strong><em>5 hrs + 6 hrs · from $105</em></div></div>
+        </div>
+        <div class="bdos-itin-foot">
+          <div class="bdos-itin-stay"><i class="fas fa-bed"></i>Suggested base: Barbados Platinum Coast Villa</div>
+          <div class="bdos-itin-actions">
+            <a class="bdos-itin-btn primary" href="#" onclick="openLinkedStartPlanning();return false;">Plan this trip</a>
+            <a class="bdos-itin-btn ghost" href="#" onclick="nav('tours');return false;">View tours</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <p class="bdos-itin-note">Prices are per-person “from” guides for the listed excursions and exclude stays and transfers. Every itinerary is fully customizable — tell us your dates and group and we’ll build the final plan.</p>
+  </div>
+</section>
+
 <!-- NEWSLETTER -->
 <div class="newsletter">
   <div class="nl-wrap">
@@ -10944,6 +11052,82 @@ body.theme-night .page .tag{
     </div>
   </div>
 </section>
+
+  <!-- ======== BARBADOS ITINERARIES (Tours page) ======== -->
+  <section class="bdos-itin-sec" id="barbadosItinerariesTours">
+    <div class="bdos-itin-wrap">
+      <div class="bdos-itin-head reveal">
+        <span class="sec-pre">Ready-made in Barbados</span>
+        <h2 class="sec-title">Barbados Itineraries</h2>
+        <p>Not sure how to combine the excursions above? These three ready-made Barbados plans stitch our island tours into easy day-by-day trips — each one fully customizable around your dates and group.</p>
+      </div>
+      <div class="bdos-itin-grid">
+
+        <div class="bdos-itin-card sea reveal">
+          <div class="bdos-itin-top">
+            <span class="bdos-itin-chip">Water &amp; Beach</span>
+            <h3>Sea &amp; Sail Escape</h3>
+            <span class="dur">3 days · from $235 in excursions</span>
+          </div>
+          <div class="bdos-itin-body">
+            <div class="bdos-itin-day"><div class="bdos-itin-dnum">1</div><div class="bdos-itin-dcopy"><strong>Catamaran Snorkel Cruise with Lunch</strong><em>5 hours · from $115</em></div></div>
+            <div class="bdos-itin-day"><div class="bdos-itin-dnum">2</div><div class="bdos-itin-dcopy"><strong>Carlisle Bay Turtle &amp; Shipwreck Boat Cruise + Beach Day &amp; Turtle Swim</strong><em>1.5 hrs + 6 hrs · from $86</em></div></div>
+            <div class="bdos-itin-day"><div class="bdos-itin-dnum">3</div><div class="bdos-itin-dcopy"><strong>Turtle &amp; Reef Snorkel Cruise</strong><em>Half day · from $85</em></div></div>
+          </div>
+          <div class="bdos-itin-foot">
+            <div class="bdos-itin-stay"><i class="fas fa-bed"></i>Suggested base: West Coast Beach Vacation Rentals</div>
+            <div class="bdos-itin-actions">
+              <a class="bdos-itin-btn primary" href="#" onclick="openLinkedStartPlanning();return false;">Plan this trip</a>
+              <a class="bdos-itin-btn ghost" href="#" onclick="setCuratedCountry('Barbados');return false;">Browse Barbados tours</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="bdos-itin-card land reveal">
+          <div class="bdos-itin-top">
+            <span class="bdos-itin-chip">Land &amp; Culture</span>
+            <h3>Island &amp; Heritage Trail</h3>
+            <span class="dur">3 days · from $355 in excursions</span>
+          </div>
+          <div class="bdos-itin-body">
+            <div class="bdos-itin-day"><div class="bdos-itin-dnum">1</div><div class="bdos-itin-dcopy"><strong>Island Safari Jeep &amp; Scenic Coast Tour</strong><em>5–6 hours · from $95</em></div></div>
+            <div class="bdos-itin-day"><div class="bdos-itin-dnum">2</div><div class="bdos-itin-dcopy"><strong>Harrison’s Cave &amp; Hunte’s Gardens Escape</strong><em>5 hours · from $155</em></div></div>
+            <div class="bdos-itin-day"><div class="bdos-itin-dnum">3</div><div class="bdos-itin-dcopy"><strong>Mount Gay Rum Distillery Experience</strong><em>5 hours · from $105</em></div></div>
+          </div>
+          <div class="bdos-itin-foot">
+            <div class="bdos-itin-stay"><i class="fas fa-bed"></i>Suggested base: Speightstown Oceanview Villa</div>
+            <div class="bdos-itin-actions">
+              <a class="bdos-itin-btn primary" href="#" onclick="openLinkedStartPlanning();return false;">Plan this trip</a>
+              <a class="bdos-itin-btn ghost" href="#" onclick="setCuratedCountry('Barbados');return false;">Browse Barbados tours</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="bdos-itin-card mix reveal">
+          <div class="bdos-itin-top">
+            <span class="bdos-itin-chip">Best of Both</span>
+            <h3>Signature Barbados Weekend</h3>
+            <span class="dur">3 days · from $375 in excursions</span>
+          </div>
+          <div class="bdos-itin-body">
+            <div class="bdos-itin-day"><div class="bdos-itin-dnum">1</div><div class="bdos-itin-dcopy"><strong>Catamaran Snorkel Cruise with Lunch</strong><em>5 hours · from $115</em></div></div>
+            <div class="bdos-itin-day"><div class="bdos-itin-dnum">2</div><div class="bdos-itin-dcopy"><strong>Harrison’s Cave &amp; Hunte’s Gardens Escape</strong><em>5 hours · from $155</em></div></div>
+            <div class="bdos-itin-day"><div class="bdos-itin-dnum">3</div><div class="bdos-itin-dcopy"><strong>Mount Gay Rum Distillery + Beach Day &amp; Turtle Swim</strong><em>5 hrs + 6 hrs · from $105</em></div></div>
+          </div>
+          <div class="bdos-itin-foot">
+            <div class="bdos-itin-stay"><i class="fas fa-bed"></i>Suggested base: Barbados Platinum Coast Villa</div>
+            <div class="bdos-itin-actions">
+              <a class="bdos-itin-btn primary" href="#" onclick="openLinkedStartPlanning();return false;">Plan this trip</a>
+              <a class="bdos-itin-btn ghost" href="#" onclick="setCuratedCountry('Barbados');return false;">Browse Barbados tours</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <p class="bdos-itin-note">Prices are per-person “from” guides for the listed excursions and exclude stays and transfers. Every itinerary is fully customizable — tell us your dates and group and we’ll build the final plan.</p>
+    </div>
+  </section>
+
   <section class="tour-item-detail" id="tourDetailSection" style="display:none">
     <div class="tour-item-hero" id="tourDetailHero" style="background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&q=85')">
       <div class="tour-item-hero-inner">
