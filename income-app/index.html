@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ResumeRush — Résumé Fixed in 24 Hours</title>
+<meta name="description" content="Free résumé score in 10 seconds. Professional résumé rewrite delivered in 24 hours from $25.">
+<style>
+:root{--bg:#fff;--fg:#14213d;--muted:#5b6478;--card:#f5f7fb;--line:#e1e6ef;--accent:#2a5bd7;--accent-fg:#fff;--good:#1f9d55;--warn:#d98a00;--bad:#d64545}
+@media (prefers-color-scheme:dark){:root{--bg:#0e1424;--fg:#eef1f8;--muted:#9aa5bf;--card:#171f35;--line:#27314d;--accent:#6c93ff;--accent-fg:#0e1424}}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--fg)}
+.wrap{max-width:960px;margin:0 auto;padding:0 16px}
+header{padding:20px 0;display:flex;justify-content:space-between;align-items:center}
+.logo{font-weight:800;font-size:20px}.logo span{color:var(--accent)}
+.hero{padding:40px 0 24px;text-align:center}
+.hero h1{font-size:clamp(28px,6vw,46px);line-height:1.15;margin:0 0 12px}
+.hero p{color:var(--muted);max-width:620px;margin:0 auto 20px;font-size:18px}
+.btn{display:inline-block;background:var(--accent);color:var(--accent-fg);border:0;padding:12px 22px;border-radius:10px;font-weight:700;font-size:16px;cursor:pointer;text-decoration:none}
+.btn.alt{background:transparent;color:var(--accent);border:2px solid var(--accent)}
+section{padding:32px 0}
+h2{font-size:28px;margin:0 0 6px}
+.sub{color:var(--muted);margin:0 0 20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+textarea,input,select{width:100%;padding:11px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);font:inherit}
+textarea{min-height:170px;resize:vertical}
+label{display:block;font-weight:600;margin:12px 0 4px}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.price{font-size:34px;font-weight:800}
+.tier ul{padding-left:18px;color:var(--muted)}
+.tier.pop{border:2px solid var(--accent)}
+.tag{font-size:12px;font-weight:700;color:var(--accent);text-transform:uppercase}
+.score{font-size:48px;font-weight:800}
+.meter{height:10px;background:var(--line);border-radius:6px;overflow:hidden;margin:8px 0}
+.meter i{display:block;height:100%;transition:width .4s}
+.issues li{margin:6px 0}
+#result{display:none;margin-top:16px}
+footer{padding:28px 0;color:var(--muted);font-size:14px;border-top:1px solid var(--line);text-align:center}
+.notice{background:#fff7e0;color:#5a4300;border-radius:8px;padding:10px 14px;font-size:14px;margin-bottom:14px;display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div class="logo">Resume<span>Rush</span></div><a class="btn alt" href="#pricing">Pricing</a></header>
+
+<div class="hero">
+  <h1>Your résumé, rewritten by a pro in 24 hours.</h1>
+  <p>Get a free instant score below. Then let us fix it — ATS-friendly, results-focused, back in your inbox within a day.</p>
+  <a class="btn" href="#check">Get my free score</a>
+</div>
+
+<section id="check">
+  <h2>Free résumé check</h2>
+  <p class="sub">Runs in your browser. Nothing is uploaded or stored.</p>
+  <div class="card">
+    <label for="resume">Paste your résumé text</label>
+    <textarea id="resume" placeholder="Paste your résumé here..."></textarea>
+    <p><button class="btn" id="scoreBtn">Score my résumé</button></p>
+    <div id="result">
+      <div class="score" id="scoreNum"></div>
+      <div class="meter"><i id="bar"></i></div>
+      <ul class="issues" id="issues"></ul>
+      <p><a class="btn" href="#pricing">Fix these for me — from $25</a></p>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <h2>Pick your fix</h2>
+  <p class="sub">One-time price. Delivered within 24 hours. One free round of revisions.</p>
+  <div class="notice" id="setupNotice"></div>
+  <div class="grid">
+    <div class="card tier"><div class="tag">Starter</div><div class="price">$25</div>
+      <ul><li>Full résumé rewrite</li><li>ATS keyword optimisation</li><li>PDF + Word file</li></ul>
+      <p><a class="btn" data-plan="starter" href="#order">Choose Starter</a></p></div>
+    <div class="card tier pop"><div class="tag">Most popular</div><div class="price">$45</div>
+      <ul><li>Everything in Starter</li><li>Tailored cover letter</li><li>LinkedIn headline + About rewrite</li></ul>
+      <p><a class="btn" data-plan="pro" href="#order">Choose Pro</a></p></div>
+    <div class="card tier"><div class="tag">Rush</div><div class="price">$75</div>
+      <ul><li>Everything in Pro</li><li>Delivered in 6 hours</li><li>30-min feedback call</li></ul>
+      <p><a class="btn" data-plan="rush" href="#order">Choose Rush</a></p></div>
+  </div>
+</section>
+
+<section id="order">
+  <h2>Place your order</h2>
+  <p class="sub">After you pay, fill this in and we start right away.</p>
+  <form class="card" id="orderForm">
+    <label>Package</label>
+    <select id="plan"><option value="starter">Starter — $25</option><option value="pro">Pro — $45</option><option value="rush">Rush — $75</option></select>
+    <label>Name</label><input id="name" required>
+    <label>Email</label><input id="email" type="email" required>
+    <label>Job you're targeting</label><input id="target" placeholder="e.g. Marketing coordinator">
+    <label>Paste current résumé (or attach it in the email that opens)</label><textarea id="orderResume"></textarea>
+    <p><button class="btn" type="submit">Pay &amp; send order</button></p>
+  </form>
+</section>
+
+<footer>© <span id="yr"></span> ResumeRush · Questions? <a id="contactLink" href="#">Email us</a></footer>
+</div>
+
+<script>
+/* ==== CONFIGURE THESE 4 THINGS BEFORE YOU SHARE THE LINK ====
+   1. Create a payment link per package (Stripe Payment Links, PayPal.me, Cash App, Venmo...).
+   2. Paste each URL below. 3. Set your email. 4. Done. */
+const CONFIG = {
+  email: "",                      // <- your email, where orders arrive
+  payLinks: { starter: "", pro: "", rush: "" } // <- e.g. "https://buy.stripe.com/xxxx"
+};
+const PRICES = {starter:25, pro:45, rush:75};
+const $ = id => document.getElementById(id);
+$('yr').textContent = new Date().getFullYear();
+$('contactLink').href = CONFIG.email ? 'mailto:' + CONFIG.email : '#';
+if (!CONFIG.email || !Object.values(CONFIG.payLinks).every(Boolean)) {
+  const n = $('setupNotice'); n.style.display = 'block';
+  n.textContent = 'Owner setup needed: open income-app/index.html and fill in CONFIG (email + payment links). Visitors will be asked to pay by email until you do.';
+}
+document.querySelectorAll('[data-plan]').forEach(a => a.addEventListener('click', () => { $('plan').value = a.dataset.plan; }));
+
+/* ---- Free résumé scorer (heuristic, runs locally) ---- */
+const VERBS = /\b(led|managed|built|created|launched|improved|increased|reduced|delivered|designed|developed|negotiated|trained|grew|saved|streamlined|organized|achieved|implemented|coordinated|analyzed)\b/gi;
+const WEAK = /\b(responsible for|duties included|worked on|helped with|team player|hard[- ]working|detail[- ]oriented)\b/gi;
+$('scoreBtn').addEventListener('click', () => {
+  const t = $('resume').value.trim();
+  if (t.length < 80) { alert('Paste a bit more of your résumé first.'); return; }
+  const words = t.split(/\s+/).length;
+  const nums = (t.match(/\d[\d,.%$kK]*/g) || []).length;
+  const verbs = (t.match(VERBS) || []).length;
+  const weak = (t.match(WEAK) || []).length;
+  const hasEmail = /\S+@\S+\.\S+/.test(t);
+  const hasSummary = /summary|profile|objective/i.test(t);
+  const hasSkills = /skills/i.test(t);
+  let s = 40; const issues = [];
+  if (nums >= 6) s += 18; else issues.push('Add measurable results (numbers, %, $). You have ' + nums + '; aim for 6+.');
+  if (verbs >= 6) s += 16; else issues.push('Start bullets with strong action verbs (led, built, increased…). Found ' + verbs + '.');
+  if (!weak) s += 8; else issues.push('Replace weak phrases like "responsible for" / "team player" (' + weak + ' found).');
+  if (words >= 250 && words <= 800) s += 8; else issues.push(words < 250 ? 'Too short (' + words + ' words) — add detail.' : 'Too long (' + words + ' words) — trim to 1–2 pages.');
+  if (hasEmail) s += 3; else issues.push('No email address detected.');
+  if (hasSummary) s += 3; else issues.push('Add a 2–3 line professional summary at the top.');
+  if (hasSkills) s += 4; else issues.push('Add a Skills section with keywords from the job posting.');
+  s = Math.min(100, s);
+  $('result').style.display = 'block';
+  $('scoreNum').textContent = s + '/100';
+  const bar = $('bar'); bar.style.width = s + '%';
+  bar.style.background = s >= 75 ? 'var(--good)' : s >= 55 ? 'var(--warn)' : 'var(--bad)';
+  $('issues').innerHTML = issues.length ? issues.map(i => '<li>⚠️ ' + i.replace(/</g,'&lt;') + '</li>').join('') : '<li>✅ Looks solid! A pro polish can still lift response rates.</li>';
+});
+
+/* ---- Order flow: open payment link, then prefilled email with details ---- */
+$('orderForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const plan = $('plan').value;
+  const body = `Package: ${plan} ($${PRICES[plan]})\nName: ${$('name').value}\nEmail: ${$('email').value}\nTarget job: ${$('target').value}\n\nRésumé:\n${$('orderResume').value}`;
+  const link = CONFIG.payLinks[plan];
+  if (link) window.open(link, '_blank', 'noopener');
+  if (CONFIG.email) window.location.href = 'mailto:' + CONFIG.email + '?subject=' + encodeURIComponent('ResumeRush order: ' + plan) + '&body=' + encodeURIComponent(body);
+  else alert('Owner has not set up email yet. Please try again later.');
+});
+</script>
+</body>
+</html>
