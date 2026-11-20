@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ResumeRush — Pro Résumé Rewrite in Minutes</title>
+<title>ResumeRush, Pro Résumé Rewrite in Minutes</title>
 <meta name="description" content="Free résumé score in 10 seconds. Professional résumé rewrite in minutes from $9.99.">
 <style>
 .out{margin:16px 0}.out pre{white-space:pre-wrap;font:inherit;margin:8px 0 0}.out h3{margin:0;display:flex;justify-content:space-between;align-items:center}.lock{filter:blur(5px);user-select:none;pointer-events:none;color:var(--muted)}.small{padding:6px 12px;font-size:14px}
@@ -47,7 +47,7 @@ footer{padding:28px 0;color:var(--muted);font-size:14px;border-top:1px solid var
 
 <div class="hero">
   <h1>Your résumé, professionally rewritten in minutes.</h1>
-  <p>Get a free instant score below. Then let us fix it — ATS-friendly, results-focused, ready on this page right after you pay.</p>
+  <p>Get a free instant score below. Then let us fix it, ATS-friendly, results-focused, ready on this page right after you pay.</p>
   <a class="btn" href="#check">Get my free score</a>
 </div>
 
@@ -66,7 +66,7 @@ footer{padding:28px 0;color:var(--muted);font-size:14px;border-top:1px solid var
       <div id="match"></div>
       <p><button class="btn alt" id="sampleBtn">✨ Show me a free sample rewrite</button> <span class="sub" id="sampleMsg"></span></p>
       <div id="sample"></div>
-      <p><a class="btn" href="#pricing">Fix these for me — from $9.99</a></p>
+      <p><a class="btn" href="#pricing">Fix these for me, from $9.99</a></p>
     </div>
   </div>
 </section>
@@ -82,7 +82,7 @@ footer{padding:28px 0;color:var(--muted);font-size:14px;border-top:1px solid var
     <div class="card tier pop"><div class="tag">Best value to try</div><div class="price">$14.99<small style="font-size:16px;font-weight:600">/mo</small></div>
       <ul><li>15 full rewrites every month</li><li>Résumé, cover letter, LinkedIn &amp; interview prep each time</li><li>Tailor for every job you apply to</li><li>Cancel anytime</li></ul>
       <p><a class="btn buy" data-plan="monthly" href="#">Start monthly plan</a></p></div>
-    <div class="card tier"><div class="tag">Pro — one time</div><div class="price">$45</div>
+    <div class="card tier"><div class="tag">Pro, one time</div><div class="price">$45</div>
       <ul><li>Everything in Starter</li><li>Tailored to your job posting</li><li>Cover letter + LinkedIn rewrite</li><li>Interview prep: likely questions, tips &amp; your 30-second pitch</li></ul>
       <p><a class="btn buy" data-plan="pro" href="#">Buy Pro</a></p></div>
     <div class="card tier"><div class="tag">Premium</div><div class="price">$75</div>
@@ -97,8 +97,8 @@ footer{padding:28px 0;color:var(--muted);font-size:14px;border-top:1px solid var
   <form class="card" id="orderForm">
     <label>Job you're targeting</label><input id="target" placeholder="e.g. Marketing coordinator at a retail company">
     <label>Paste your current résumé, or upload it below</label><textarea id="orderResume" required></textarea><label>Or upload a file (PDF, Word .docx or .txt)</label><input type="file" class="upl" data-target="orderResume" accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain"><div class="sub upmsg" style="margin:4px 0 0"></div>
-    <label>Paste the job posting (recommended — we tailor your résumé to it)</label><textarea id="job" style="min-height:110px"></textarea>
-    <label>Anything else? (optional — extra achievements, tone, what to change on a revision)</label><textarea id="extra" style="min-height:80px"></textarea>
+    <label>Paste the job posting (recommended, we tailor your résumé to it)</label><textarea id="job" style="min-height:110px"></textarea>
+    <label>Anything else? (optional, extra achievements, tone, what to change on a revision)</label><textarea id="extra" style="min-height:80px"></textarea>
     <p><button class="btn" type="submit" id="goBtn">Write my documents</button> <span id="status" class="sub"></span></p>
   </form>
   <div id="output"></div>
@@ -123,7 +123,7 @@ document.querySelectorAll('.buy').forEach(a => a.addEventListener('click', e => 
   e.preventDefault();
   const link = CONFIG.payLinks[a.dataset.plan];
   if (link) location.href = link;
-  else { const n = $('setupNotice'); n.style.display = 'block'; n.textContent = 'Checkout is not set up yet — the owner needs to add payment links in income-app/index.html.'; }
+  else { const n = $('setupNotice'); n.style.display = 'block'; n.textContent = 'Checkout is not set up yet, the owner needs to add payment links in income-app/index.html.'; }
 }));
 
 /* ---- Free résumé scorer (heuristic, runs locally) ---- */
@@ -156,9 +156,9 @@ $('scoreBtn').addEventListener('click', () => {
   if (nums >= 6) s += 18; else issues.push('Add measurable results (numbers, %, $). You have ' + nums + '; aim for 6+.');
   if (verbs >= 6) s += 16; else issues.push('Start bullets with strong action verbs (led, built, increased…). Found ' + verbs + '.');
   if (!weak) s += 8; else issues.push('Replace weak phrases like "responsible for" / "team player" (' + weak + ' found).');
-  if (words >= 250 && words <= 800) s += 8; else issues.push(words < 250 ? 'Too short (' + words + ' words) — add detail.' : 'Too long (' + words + ' words) — trim to 1–2 pages.');
+  if (words >= 250 && words <= 800) s += 8; else issues.push(words < 250 ? 'Too short (' + words + ' words), add detail.' : 'Too long (' + words + ' words), trim to 1–2 pages.');
   if (hasEmail) s += 3; else issues.push('No email address detected.');
-  if (hasSummary) s += 3; else issues.push('Add a 2–3 line professional summary at the top.');
+  if (hasSummary) s += 3; else issues.push('Add a 2 to 3 line professional summary at the top.');
   if (hasSkills) s += 4; else issues.push('Add a Skills section with keywords from the job posting.');
   s = Math.min(100, s);
   $('result').style.display = 'block';
@@ -166,7 +166,7 @@ $('scoreBtn').addEventListener('click', () => {
   const bar = $('bar'); bar.style.width = s + '%';
   bar.style.background = s >= 75 ? 'var(--good)' : s >= 55 ? 'var(--warn)' : 'var(--bad)';
   const jm = $('jobFree').value.trim() ? jobMatch(t, $('jobFree').value) : null;
-  $('match').innerHTML = jm ? `<div class="card" style="margin:12px 0"><strong>Job match: ${jm.pct}%</strong><div class="meter"><i style="width:${jm.pct}%;background:${jm.pct>=70?'var(--good)':jm.pct>=45?'var(--warn)':'var(--bad)'}"></i></div>${jm.miss.length?'<div class="sub" style="margin:0">Missing keywords from the posting: <b>'+jm.miss.map(w=>w.replace(/</g,'&lt;')).join(', ')+'</b>. Recruiters\' software filters on these — the paid rewrite works in the ones you truthfully have.</div>':'Great keyword coverage.'}</div>` : '';
+  $('match').innerHTML = jm ? `<div class="card" style="margin:12px 0"><strong>Job match: ${jm.pct}%</strong><div class="meter"><i style="width:${jm.pct}%;background:${jm.pct>=70?'var(--good)':jm.pct>=45?'var(--warn)':'var(--bad)'}"></i></div>${jm.miss.length?'<div class="sub" style="margin:0">Missing keywords from the posting: <b>'+jm.miss.map(w=>w.replace(/</g,'&lt;')).join(', ')+'</b>. Recruiters\' software filters on these, the paid rewrite works in the ones you truthfully have.</div>':'Great keyword coverage.'}</div>` : '';
   $('issues').innerHTML = issues.length ? issues.map(i => '<li>⚠️ ' + i.replace(/</g,'&lt;') + '</li>').join('') : '<li>✅ Looks solid! A pro polish can still lift response rates.</li>';
 });
 
@@ -200,7 +200,7 @@ document.querySelectorAll('.upl').forEach(inp => inp.addEventListener('change', 
   try {
     const t = (await fileToText(f)).replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
     if (t.length < 80) throw new Error('Could not find text in that file (scanned image PDFs are not supported). Please paste the text instead.');
-    $(inp.dataset.target).value = t; msg.textContent = '✅ Loaded ' + f.name + ' — please check the text below looks right.';
+    $(inp.dataset.target).value = t; msg.textContent = '✅ Loaded ' + f.name + ', please check the text below looks right.';
   } catch (e) { msg.textContent = '⚠️ ' + e.message; inp.value = ''; }
 }));
 
@@ -214,15 +214,15 @@ $('sampleBtn').addEventListener('click', async () => {
     $('sampleMsg').textContent = '';
     $('sample').innerHTML = `<div class="card out"><h3>Your free sample</h3><p><b>Professional summary</b><br>${esc(j.summary)}</p>` +
       j.bullets.map(b => `<p><span class="sub" style="text-decoration:line-through">${esc(b.before)}</span><br>✅ ${esc(b.after)}</p>`).join('') +
-      `<div class="lock" aria-hidden="true"><p><b>Experience, skills &amp; education — fully rewritten</b><br>Rewritten achievement bullets tailored to your target job go here…</p><p><b>Cover letter</b><br>Dear hiring manager, I am excited to apply for…</p><p><b>Interview prep</b><br>The 8 questions you\'ll most likely be asked…</p></div>` +
-      `<p><b>🔒 That was about 10% of the full package.</b></p><p><a class="btn" href="#pricing">Unlock the full rewrite</a> <a class="btn alt" href="#pricing">Go monthly — $14.99/mo</a></p></div>`;
+      `<div class="lock" aria-hidden="true"><p><b>Experience, skills &amp; education, fully rewritten</b><br>Rewritten achievement bullets tailored to your target job go here…</p><p><b>Cover letter</b><br>Dear hiring manager, I am excited to apply for…</p><p><b>Interview prep</b><br>The 8 questions you\'ll most likely be asked…</p></div>` +
+      `<p><b>🔒 That was about 10% of the full package.</b></p><p><a class="btn" href="#pricing">Unlock the full rewrite</a> <a class="btn alt" href="#pricing">Go monthly, $14.99/mo</a></p></div>`;
   } catch (e) { $('sampleMsg').textContent = '⚠️ ' + e.message; $('sampleBtn').disabled = false; return; }
 });
 
 /* ---- Paid studio ---- */
 let SID = new URLSearchParams(location.search).get('session_id');
 try { if (SID) localStorage.setItem('rr_sid', SID); else SID = localStorage.getItem('rr_sid'); } catch (e) {}
-const LABELS = {RESUME:'Résumé','COVER LETTER':'Cover letter',LINKEDIN:'LinkedIn headline & About','INTERVIEW PREP':'Interview prep & tips for this job','ALT VERSION 1':'Alternate résumé 1','ALT VERSION 2':'Alternate résumé 2',NOTES:'Notes — please double-check'};
+const LABELS = {RESUME:'Résumé','COVER LETTER':'Cover letter',LINKEDIN:'LinkedIn headline & About','INTERVIEW PREP':'Interview prep & tips for this job','ALT VERSION 1':'Alternate résumé 1','ALT VERSION 2':'Alternate résumé 2',NOTES:'Notes, please double-check'};
 const esc = t => t.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 async function api(method, body) {
   const r = await fetch('/api/rewrite' + (method === 'GET' ? '?session_id=' + encodeURIComponent(SID) : ''), {
@@ -236,7 +236,7 @@ if (SID) {
     .catch(e => { $('studioInfo').textContent = e.message; $('orderForm').style.display = 'none'; try { localStorage.removeItem('rr_sid'); } catch (x) {} });
 }
 $('orderForm').addEventListener('submit', async e => {
-  e.preventDefault(); $('goBtn').disabled = true; $('status').textContent = 'Writing… this takes 20–40 seconds.';
+  e.preventDefault(); $('goBtn').disabled = true; $('status').textContent = 'Writing… this takes 20 to 40 seconds.';
   try {
     const j = await api('POST', {session_id: SID, resume: $('orderResume').value, target: $('target').value, extra: $('extra').value, job: $('job').value});
     $('output').innerHTML = j.order.map(k => j.sections[k] ? `<div class="card out ${k==='NOTES'?'noprint':'print-area'}"><h3>${LABELS[k]||k}<span class="noprint"><button class="btn alt small" data-copy="${k}">Copy</button> <button class="btn alt small" data-print="${k}">Save PDF</button></span></h3><pre>${esc(j.sections[k])}</pre></div>` : '').join('');

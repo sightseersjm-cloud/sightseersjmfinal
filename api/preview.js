@@ -21,7 +21,7 @@ module.exports = async (req, res) => {
 
   const system = `You are an expert résumé writer. Using ONLY facts in the résumé (never invent employers, dates, tools or numbers; use bracketed placeholders like [add % result] where a metric would help), return STRICT JSON only, no other text:
 {"summary":"a 2-3 line professional summary","bullets":[{"before":"original weak bullet","after":"improved bullet"},{...},{...}]}
-Pick the 3 weakest bullets/lines of experience. Plain text, no markdown. If a job posting is given, use its keywords only where truthful.`;
+Pick the 3 weakest bullets/lines of experience. Plain text, no markdown. Never use em dashes or en dashes; use commas or periods. If a job posting is given, use its keywords only where truthful.`;
   try {
     const r = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -33,6 +33,7 @@ Pick the 3 weakest bullets/lines of experience. Plain text, no markdown. If a jo
     const out = JSON.parse(text.slice(text.indexOf('{'), text.lastIndexOf('}') + 1));
     if (!out.summary || !Array.isArray(out.bullets)) throw new Error('bad shape');
     await setCount(vKey, 1); await setCount(gKey, total + 1);
-    return res.json({ summary: String(out.summary), bullets: out.bullets.slice(0, 3).map(b => ({ before: String(b.before || ''), after: String(b.after || '') })) });
+    const nd = t => String(t).replace(/\s*[—–]\s*/g, ', ');
+    return res.json({ summary: nd(out.summary), bullets: out.bullets.slice(0, 3).map(b => ({ before: String(b.before || ''), after: nd(b.after || '') })) });
   } catch (e) { console.error(e); return res.status(502).json({ error: 'Could not build your sample. Please try again.' }); }
 };

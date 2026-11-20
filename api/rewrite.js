@@ -31,6 +31,7 @@ function buildPrompt(plan) {
   parts.push('NOTES');
   const system = `You are an expert résumé writer and career coach. Rewrite the user's résumé so it is clear, ATS-friendly and results-focused.
 Hard rules:
+- NEVER use em dashes or en dashes (— or –) anywhere. Do not use hyphen characters as bullet markers; start each bullet line with the • character. Write date ranges as "2019 to 2021". Use commas, periods or colons instead of dashes.
 - Use ONLY facts in the provided résumé/details. NEVER invent employers, titles, dates, degrees, tools or numbers.
 - Where a metric would help but is missing, write a bracketed placeholder like [add % or $ result] so the customer fills in the truth.
 - Start bullets with strong action verbs, remove filler ("responsible for"), keep it concise, plain text only (no markdown symbols like ** or #).
@@ -45,7 +46,14 @@ Output EXACTLY these sections, each starting on its own line with "=====NAME====
   return { system, parts };
 }
 
-module.exports = async (req, res) => {
+// Remove dashes the model may still emit: em/en dashes become commas or 'to'; "- " bullets become •
+function noDashes(t) {
+  return String(t)
+    .replace(/(\d)\s*[–—]\s*(\d|Present|present|Current|current)/g, '$1 to $2')
+    .replace(/\s*[—–]\s*/g, ', ')
+    .replace(/^(\s*)[-*]\s+/gm, '$1• ');
+}
+module.exports = Object.assign(async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   const unpaid = process.env.ALLOW_UNPAID === '1';
   const sid = (req.method === 'GET' ? req.query.session_id : (req.body || {}).session_id) || '';
@@ -81,7 +89,7 @@ module.exports = async (req, res) => {
     if (!r.ok) { console.error('anthropic', r.status, await r.text()); return res.status(502).json({ error: 'The writer is busy. Please try again in a minute (you were not charged a revision).' }); }
     const text = ((await r.json()).content || []).map(b => b.text || '').join('');
     const sections = {};
-    text.split(/^=====(.+?)=====\s*$/m).forEach((chunk, i, arr) => { if (i % 2 === 1) sections[chunk.trim()] = (arr[i + 1] || '').trim(); });
+    text.split(/^=====(.+?)=====\s*$/m).forEach((chunk, i, arr) => { if (i % 2 === 1) sections[chunk.trim()] = noDashes((arr[i + 1] || '').trim()); });
     if (!sections.RESUME) return res.status(502).json({ error: 'Could not format the result. Please try again.' });
     await setCount(key, used + 1);
     return res.json({ plan: info.plan, remaining: info.cap - used - 1, order: parts, sections });
@@ -89,4 +97,4 @@ module.exports = async (req, res) => {
     console.error(e);
     return res.status(500).json({ error: 'Something went wrong. Please try again.' });
   }
-};
+}, { noDashes });
