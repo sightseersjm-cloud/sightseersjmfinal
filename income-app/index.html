@@ -156,7 +156,7 @@ $('scoreBtn').addEventListener('click', () => {
   if (nums >= 6) s += 18; else issues.push('Add measurable results (numbers, %, $). You have ' + nums + '; aim for 6+.');
   if (verbs >= 6) s += 16; else issues.push('Start bullets with strong action verbs (led, built, increased…). Found ' + verbs + '.');
   if (!weak) s += 8; else issues.push('Replace weak phrases like "responsible for" / "team player" (' + weak + ' found).');
-  if (words >= 250 && words <= 800) s += 8; else issues.push(words < 250 ? 'Too short (' + words + ' words), add detail.' : 'Too long (' + words + ' words), trim to 1–2 pages.');
+  if (words >= 250 && words <= 800) s += 8; else issues.push(words < 250 ? 'Too short (' + words + ' words), add detail.' : 'Too long (' + words + ' words), trim to 1 to 2 pages.');
   if (hasEmail) s += 3; else issues.push('No email address detected.');
   if (hasSummary) s += 3; else issues.push('Add a 2 to 3 line professional summary at the top.');
   if (hasSkills) s += 4; else issues.push('Add a Skills section with keywords from the job posting.');
