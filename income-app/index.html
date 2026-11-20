@@ -57,11 +57,13 @@ footer{padding:28px 0;color:var(--muted);font-size:14px;border-top:1px solid var
   <div class="card">
     <label for="resume">Paste your résumé text</label>
     <textarea id="resume" placeholder="Paste your résumé here..."></textarea><label>Or upload a file (PDF, Word .docx or .txt)</label><input type="file" class="upl" data-target="resume" accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain"><div class="sub upmsg" style="margin:4px 0 0"></div>
+    <label for="jobFree">Optional: paste the job posting you're applying to</label><textarea id="jobFree" style="min-height:90px" placeholder="We'll show how well your résumé matches it…"></textarea>
     <p><button class="btn" id="scoreBtn">Score my résumé</button></p>
     <div id="result">
       <div class="score" id="scoreNum"></div>
       <div class="meter"><i id="bar"></i></div>
       <ul class="issues" id="issues"></ul>
+      <div id="match"></div>
       <p><a class="btn" href="#pricing">Fix these for me — from $9.99</a></p>
     </div>
   </div>
@@ -73,10 +75,10 @@ footer{padding:28px 0;color:var(--muted);font-size:14px;border-top:1px solid var
   <div class="notice" id="setupNotice"></div>
   <div class="grid">
     <div class="card tier"><div class="tag">Starter</div><div class="price">$9.99</div>
-      <ul><li>Full résumé rewrite</li><li>ATS keyword optimisation</li><li>Copy or save as PDF</li></ul>
+      <ul><li>Full résumé rewrite</li><li>Tailored to a job posting + ATS keywords</li><li>Copy or save as PDF</li></ul>
       <p><a class="btn buy" data-plan="starter" href="#">Buy Starter</a></p></div>
     <div class="card tier pop"><div class="tag">Most popular</div><div class="price">$45</div>
-      <ul><li>Everything in Starter</li><li>Tailored cover letter</li><li>LinkedIn headline + About</li></ul>
+      <ul><li>Everything in Starter</li><li>Tailored to your job posting</li><li>Cover letter + LinkedIn rewrite</li><li>Interview prep: likely questions, tips &amp; your 30-second pitch</li></ul>
       <p><a class="btn buy" data-plan="pro" href="#">Buy Pro</a></p></div>
     <div class="card tier"><div class="tag">Premium</div><div class="price">$75</div>
       <ul><li>Everything in Pro</li><li>2 extra résumé versions for different roles</li><li>Priority wording polish</li></ul>
@@ -90,6 +92,7 @@ footer{padding:28px 0;color:var(--muted);font-size:14px;border-top:1px solid var
   <form class="card" id="orderForm">
     <label>Job you're targeting</label><input id="target" placeholder="e.g. Marketing coordinator at a retail company">
     <label>Paste your current résumé, or upload it below</label><textarea id="orderResume" required></textarea><label>Or upload a file (PDF, Word .docx or .txt)</label><input type="file" class="upl" data-target="orderResume" accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain"><div class="sub upmsg" style="margin:4px 0 0"></div>
+    <label>Paste the job posting (recommended — we tailor your résumé to it)</label><textarea id="job" style="min-height:110px"></textarea>
     <label>Anything else? (optional — extra achievements, tone, what to change on a revision)</label><textarea id="extra" style="min-height:80px"></textarea>
     <p><button class="btn" type="submit" id="goBtn">Write my documents</button> <span id="status" class="sub"></span></p>
   </form>
@@ -121,6 +124,19 @@ document.querySelectorAll('.buy').forEach(a => a.addEventListener('click', e => 
 /* ---- Free résumé scorer (heuristic, runs locally) ---- */
 const VERBS = /\b(led|managed|built|created|launched|improved|increased|reduced|delivered|designed|developed|negotiated|trained|grew|saved|streamlined|organized|achieved|implemented|coordinated|analyzed)\b/gi;
 const WEAK = /\b(responsible for|duties included|worked on|helped with|team player|hard[- ]working|detail[- ]oriented)\b/gi;
+/* ---- Job match (local keyword comparison) ---- */
+const STOP = new Set('about above after again also and any are been being below between both but can could did does doing down during each etc few for from further had has have having her here hers him his how into its itself just more most must need not now off once only other our out over own same she should some such than that the their them then there these they this those through too under until very was were what when where which while who whom why will with within without would you your able across including ability work working team teams role roles join company candidate candidates position required requirements responsibilities preferred plus years year experience strong looking new well seeking'.split(' '));
+function jobMatch(resume, job) {
+  const freq = {};
+  (job.toLowerCase().match(/[a-z][a-z+#./-]{3,}/g) || []).forEach(w => { w = w.replace(/[./-]+$/,''); if (w.length > 3 && !STOP.has(w)) freq[w] = (freq[w] || 0) + 1; });
+  const top = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 25).map(x => x[0]);
+  if (top.length < 5) return null;
+  const r = resume.toLowerCase();
+  const stem = w => w.length > 6 ? w.slice(0, w.length - 2) : w;
+  const hit = top.filter(w => r.includes(stem(w))), miss = top.filter(w => !r.includes(stem(w)));
+  return { pct: Math.round(hit.length / top.length * 100), miss: miss.slice(0, 12) };
+}
+
 $('scoreBtn').addEventListener('click', () => {
   const t = $('resume').value.trim();
   if (t.length < 80) { alert('Paste a bit more of your résumé first.'); return; }
@@ -144,6 +160,8 @@ $('scoreBtn').addEventListener('click', () => {
   $('scoreNum').textContent = s + '/100';
   const bar = $('bar'); bar.style.width = s + '%';
   bar.style.background = s >= 75 ? 'var(--good)' : s >= 55 ? 'var(--warn)' : 'var(--bad)';
+  const jm = $('jobFree').value.trim() ? jobMatch(t, $('jobFree').value) : null;
+  $('match').innerHTML = jm ? `<div class="card" style="margin:12px 0"><strong>Job match: ${jm.pct}%</strong><div class="meter"><i style="width:${jm.pct}%;background:${jm.pct>=70?'var(--good)':jm.pct>=45?'var(--warn)':'var(--bad)'}"></i></div>${jm.miss.length?'<div class="sub" style="margin:0">Missing keywords from the posting: <b>'+jm.miss.map(w=>w.replace(/</g,'&lt;')).join(', ')+'</b>. Recruiters\' software filters on these — the paid rewrite works in the ones you truthfully have.</div>':'Great keyword coverage.'}</div>` : '';
   $('issues').innerHTML = issues.length ? issues.map(i => '<li>⚠️ ' + i.replace(/</g,'&lt;') + '</li>').join('') : '<li>✅ Looks solid! A pro polish can still lift response rates.</li>';
 });
 
@@ -183,7 +201,7 @@ document.querySelectorAll('.upl').forEach(inp => inp.addEventListener('change', 
 
 /* ---- Paid studio ---- */
 const SID = new URLSearchParams(location.search).get('session_id');
-const LABELS = {RESUME:'Résumé','COVER LETTER':'Cover letter',LINKEDIN:'LinkedIn headline & About','ALT VERSION 1':'Alternate résumé 1','ALT VERSION 2':'Alternate résumé 2',NOTES:'Notes — please double-check'};
+const LABELS = {RESUME:'Résumé','COVER LETTER':'Cover letter',LINKEDIN:'LinkedIn headline & About','INTERVIEW PREP':'Interview prep & tips for this job','ALT VERSION 1':'Alternate résumé 1','ALT VERSION 2':'Alternate résumé 2',NOTES:'Notes — please double-check'};
 const esc = t => t.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 async function api(method, body) {
   const r = await fetch('/api/rewrite' + (method === 'GET' ? '?session_id=' + encodeURIComponent(SID) : ''), {
@@ -199,7 +217,7 @@ if (SID) {
 $('orderForm').addEventListener('submit', async e => {
   e.preventDefault(); $('goBtn').disabled = true; $('status').textContent = 'Writing… this takes 20–40 seconds.';
   try {
-    const j = await api('POST', {session_id: SID, resume: $('orderResume').value, target: $('target').value, extra: $('extra').value});
+    const j = await api('POST', {session_id: SID, resume: $('orderResume').value, target: $('target').value, extra: $('extra').value, job: $('job').value});
     $('output').innerHTML = j.order.map(k => j.sections[k] ? `<div class="card out ${k==='NOTES'?'noprint':'print-area'}"><h3>${LABELS[k]||k}<span class="noprint"><button class="btn alt small" data-copy="${k}">Copy</button> <button class="btn alt small" data-print="${k}">Save PDF</button></span></h3><pre>${esc(j.sections[k])}</pre></div>` : '').join('');
     window._sections = j.sections; setRemaining(j.remaining); $('status').textContent = 'Done! Not quite right? Add notes above and rewrite again.';
     $('output').scrollIntoView();
