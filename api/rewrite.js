@@ -1,34 +1,27 @@
 // Vercel serverless function: verifies a paid Stripe Checkout session, then asks Claude to do the rewrite.
 // Env vars: ANTHROPIC_API_KEY, STRIPE_SECRET_KEY, (optional) BLOB_READ_WRITE_TOKEN, ALLOW_UNPAID=1 for testing.
 const PLANS = { 999: 'starter', 4500: 'pro', 7500: 'premium' };
-const MAX_RUNS = 3;            // generations allowed per payment
+const MAX_RUNS = 3;            // generations allowed per one-time payment
+const SUB_AMOUNT = 1499;       // monthly plan price in cents
+const SUB_MONTHLY_CAP = 15;    // full rewrites per month for subscribers
+const { getCount, setCount } = require('./_store');
 const MAX_INPUT = 20000;       // characters
 const MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-5-5';
-const memUsage = new Map();    // fallback when Blob isn't configured (per-instance only)
 
 async function stripeSession(id) {
   if (!/^cs_[A-Za-z0-9_]+$/.test(id || '')) return null;
-  const r = await fetch('https://api.stripe.com/v1/checkout/sessions/' + id, {
+  const r = await fetch('https://api.stripe.com/v1/checkout/sessions/' + id + '?expand[]=subscription', {
     headers: { Authorization: 'Bearer ' + process.env.STRIPE_SECRET_KEY }
   });
   if (!r.ok) return null;
   const s = await r.json();
-  if (s.payment_status !== 'paid') return null;
-  return PLANS[s.amount_total] ? { plan: PLANS[s.amount_total] } : null;
-}
-
-async function getRuns(id) {
-  if (!process.env.BLOB_READ_WRITE_TOKEN) return memUsage.get(id) || 0;
-  try {
-    const { head } = require('@vercel/blob');
-    const h = await head('runs/' + id + '.txt');
-    return parseInt(await (await fetch(h.url)).text(), 10) || 0;
-  } catch { return 0; }
-}
-async function setRuns(id, n) {
-  if (!process.env.BLOB_READ_WRITE_TOKEN) return memUsage.set(id, n);
-  const { put } = require('@vercel/blob');
-  await put('runs/' + id + '.txt', String(n), { access: 'public', addRandomSuffix: false, allowOverwrite: true });
+  if (s.mode === 'subscription') {   // monthly plan: must be an active/trialing $14.99 subscription
+    const st = s.subscription && s.subscription.status;
+    if (s.amount_total !== SUB_AMOUNT || !['active', 'trialing'].includes(st)) return null;
+    return { plan: 'pro', cap: SUB_MONTHLY_CAP, period: new Date().toISOString().slice(0, 7), sub: true };
+  }
+  if (s.payment_status !== 'paid' || !PLANS[s.amount_total]) return null;
+  return { plan: PLANS[s.amount_total], cap: MAX_RUNS, period: '' };
 }
 
 function buildPrompt(plan) {
@@ -63,13 +56,14 @@ module.exports = async (req, res) => {
     info = await stripeSession(sid);
   }
   if (!info) return res.status(402).json({ error: 'Payment not found. Please complete checkout first.' });
-  const key = unpaid ? 'test' : sid;
-  const used = await getRuns(key);
+  const key = 'runs/' + (unpaid ? 'test' : sid) + (info.period ? ':' + info.period : '');
+  info.cap = info.cap || MAX_RUNS;
+  const used = await getCount(key);
 
-  if (req.method === 'GET') return res.json({ plan: info.plan, remaining: Math.max(0, MAX_RUNS - used) });
+  if (req.method === 'GET') return res.json({ plan: info.plan, remaining: Math.max(0, info.cap - used), monthly: !!info.sub });
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   if (!process.env.ANTHROPIC_API_KEY) return res.status(503).json({ error: 'AI is not configured yet.' });
-  if (used >= MAX_RUNS) return res.status(429).json({ error: 'You have used all revisions for this order.' });
+  if (used >= info.cap) return res.status(429).json({ error: info.sub ? 'You have used this month\'s rewrites. They reset next month.' : 'You have used all revisions for this order.' });
 
   const { resume = '', target = '', extra = '', job = '' } = req.body || {};
   if (String(resume).trim().length < 80) return res.status(400).json({ error: 'Please paste your full résumé.' });
@@ -89,8 +83,8 @@ module.exports = async (req, res) => {
     const sections = {};
     text.split(/^=====(.+?)=====\s*$/m).forEach((chunk, i, arr) => { if (i % 2 === 1) sections[chunk.trim()] = (arr[i + 1] || '').trim(); });
     if (!sections.RESUME) return res.status(502).json({ error: 'Could not format the result. Please try again.' });
-    await setRuns(key, used + 1);
-    return res.json({ plan: info.plan, remaining: MAX_RUNS - used - 1, order: parts, sections });
+    await setCount(key, used + 1);
+    return res.json({ plan: info.plan, remaining: info.cap - used - 1, order: parts, sections });
   } catch (e) {
     console.error(e);
     return res.status(500).json({ error: 'Something went wrong. Please try again.' });

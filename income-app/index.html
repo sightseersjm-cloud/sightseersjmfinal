@@ -6,7 +6,7 @@
 <title>ResumeRush — Pro Résumé Rewrite in Minutes</title>
 <meta name="description" content="Free résumé score in 10 seconds. Professional résumé rewrite in minutes from $9.99.">
 <style>
-.out{margin:16px 0}.out pre{white-space:pre-wrap;font:inherit;margin:8px 0 0}.out h3{margin:0;display:flex;justify-content:space-between;align-items:center}.small{padding:6px 12px;font-size:14px}
+.out{margin:16px 0}.out pre{white-space:pre-wrap;font:inherit;margin:8px 0 0}.out h3{margin:0;display:flex;justify-content:space-between;align-items:center}.lock{filter:blur(5px);user-select:none;pointer-events:none;color:var(--muted)}.small{padding:6px 12px;font-size:14px}
 @media print{body *{visibility:hidden}.print-area,.print-area *{visibility:visible}.print-area{position:absolute;left:0;top:0;width:100%}.noprint{display:none!important}}
 :root{--bg:#fff;--fg:#14213d;--muted:#5b6478;--card:#f5f7fb;--line:#e1e6ef;--accent:#2a5bd7;--accent-fg:#fff;--good:#1f9d55;--warn:#d98a00;--bad:#d64545}
 @media (prefers-color-scheme:dark){:root{--bg:#0e1424;--fg:#eef1f8;--muted:#9aa5bf;--card:#171f35;--line:#27314d;--accent:#6c93ff;--accent-fg:#0e1424}}
@@ -64,6 +64,8 @@ footer{padding:28px 0;color:var(--muted);font-size:14px;border-top:1px solid var
       <div class="meter"><i id="bar"></i></div>
       <ul class="issues" id="issues"></ul>
       <div id="match"></div>
+      <p><button class="btn alt" id="sampleBtn">✨ Show me a free sample rewrite</button> <span class="sub" id="sampleMsg"></span></p>
+      <div id="sample"></div>
       <p><a class="btn" href="#pricing">Fix these for me — from $9.99</a></p>
     </div>
   </div>
@@ -77,7 +79,10 @@ footer{padding:28px 0;color:var(--muted);font-size:14px;border-top:1px solid var
     <div class="card tier"><div class="tag">Starter</div><div class="price">$9.99</div>
       <ul><li>Full résumé rewrite</li><li>Tailored to a job posting + ATS keywords</li><li>Copy or save as PDF</li></ul>
       <p><a class="btn buy" data-plan="starter" href="#">Buy Starter</a></p></div>
-    <div class="card tier pop"><div class="tag">Most popular</div><div class="price">$45</div>
+    <div class="card tier pop"><div class="tag">Best value to try</div><div class="price">$14.99<small style="font-size:16px;font-weight:600">/mo</small></div>
+      <ul><li>15 full rewrites every month</li><li>Résumé, cover letter, LinkedIn &amp; interview prep each time</li><li>Tailor for every job you apply to</li><li>Cancel anytime</li></ul>
+      <p><a class="btn buy" data-plan="monthly" href="#">Start monthly plan</a></p></div>
+    <div class="card tier"><div class="tag">Pro — one time</div><div class="price">$45</div>
       <ul><li>Everything in Starter</li><li>Tailored to your job posting</li><li>Cover letter + LinkedIn rewrite</li><li>Interview prep: likely questions, tips &amp; your 30-second pitch</li></ul>
       <p><a class="btn buy" data-plan="pro" href="#">Buy Pro</a></p></div>
     <div class="card tier"><div class="tag">Premium</div><div class="price">$75</div>
@@ -104,12 +109,12 @@ footer{padding:28px 0;color:var(--muted);font-size:14px;border-top:1px solid var
 
 <script>
 /* ==== CONFIGURE BEFORE YOU SHARE THE LINK ====
-   Create 3 Stripe Payment Links ($9.99 / $45 / $75). For each, set
+   Create 4 Stripe Payment Links ($9.99 / $45 / $75 one-time, $14.99 monthly subscription). For each, set
    "After payment > redirect" to:  https://YOUR-SITE/income-app/?session_id={CHECKOUT_SESSION_ID}
    Then paste the three links below. */
 const CONFIG = {
   email: "",  // optional support email shown in footer
-  payLinks: { starter: "", pro: "", premium: "" }
+  payLinks: { starter: "", pro: "", premium: "", monthly: "" } // monthly = $14.99/month Stripe subscription link
 };
 const $ = id => document.getElementById(id);
 $('yr').textContent = new Date().getFullYear();
@@ -199,8 +204,24 @@ document.querySelectorAll('.upl').forEach(inp => inp.addEventListener('change', 
   } catch (e) { msg.textContent = '⚠️ ' + e.message; inp.value = ''; }
 }));
 
+/* ---- Free limited sample (real AI, small slice) ---- */
+$('sampleBtn').addEventListener('click', async () => {
+  const t = $('resume').value.trim(); if (t.length < 80) return;
+  $('sampleBtn').disabled = true; $('sampleMsg').textContent = 'Writing your sample…';
+  try {
+    const r = await fetch('/api/preview', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({resume: t, job: $('jobFree').value})});
+    const j = await r.json().catch(() => ({})); if (!r.ok) throw new Error(j.error || 'Failed');
+    $('sampleMsg').textContent = '';
+    $('sample').innerHTML = `<div class="card out"><h3>Your free sample</h3><p><b>Professional summary</b><br>${esc(j.summary)}</p>` +
+      j.bullets.map(b => `<p><span class="sub" style="text-decoration:line-through">${esc(b.before)}</span><br>✅ ${esc(b.after)}</p>`).join('') +
+      `<div class="lock" aria-hidden="true"><p><b>Experience, skills &amp; education — fully rewritten</b><br>Rewritten achievement bullets tailored to your target job go here…</p><p><b>Cover letter</b><br>Dear hiring manager, I am excited to apply for…</p><p><b>Interview prep</b><br>The 8 questions you\'ll most likely be asked…</p></div>` +
+      `<p><b>🔒 That was about 10% of the full package.</b></p><p><a class="btn" href="#pricing">Unlock the full rewrite</a> <a class="btn alt" href="#pricing">Go monthly — $14.99/mo</a></p></div>`;
+  } catch (e) { $('sampleMsg').textContent = '⚠️ ' + e.message; $('sampleBtn').disabled = false; return; }
+});
+
 /* ---- Paid studio ---- */
-const SID = new URLSearchParams(location.search).get('session_id');
+let SID = new URLSearchParams(location.search).get('session_id');
+try { if (SID) localStorage.setItem('rr_sid', SID); else SID = localStorage.getItem('rr_sid'); } catch (e) {}
 const LABELS = {RESUME:'Résumé','COVER LETTER':'Cover letter',LINKEDIN:'LinkedIn headline & About','INTERVIEW PREP':'Interview prep & tips for this job','ALT VERSION 1':'Alternate résumé 1','ALT VERSION 2':'Alternate résumé 2',NOTES:'Notes — please double-check'};
 const esc = t => t.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 async function api(method, body) {
@@ -208,18 +229,18 @@ async function api(method, body) {
     method, headers: {'Content-Type':'application/json'}, body: method === 'POST' ? JSON.stringify(body) : undefined });
   const j = await r.json().catch(() => ({})); if (!r.ok) throw new Error(j.error || 'Request failed'); return j;
 }
-function setRemaining(n){ $('studioInfo').textContent = 'Payment confirmed. Revisions left on this order: ' + n; $('goBtn').disabled = n < 1; }
+function setRemaining(n, monthly){ $('studioInfo').textContent = monthly ? 'Welcome back! Full rewrites left this month: ' + n : 'Payment confirmed. Revisions left on this order: ' + n; window._monthly = monthly; $('goBtn').disabled = n < 1; }
 if (SID) {
   $('studio').style.display = 'block';
-  api('GET').then(j => { setRemaining(j.remaining); $('studio').scrollIntoView(); })
-    .catch(e => { $('studioInfo').textContent = e.message; $('orderForm').style.display = 'none'; });
+  api('GET').then(j => { setRemaining(j.remaining, j.monthly); $('studio').scrollIntoView(); })
+    .catch(e => { $('studioInfo').textContent = e.message; $('orderForm').style.display = 'none'; try { localStorage.removeItem('rr_sid'); } catch (x) {} });
 }
 $('orderForm').addEventListener('submit', async e => {
   e.preventDefault(); $('goBtn').disabled = true; $('status').textContent = 'Writing… this takes 20–40 seconds.';
   try {
     const j = await api('POST', {session_id: SID, resume: $('orderResume').value, target: $('target').value, extra: $('extra').value, job: $('job').value});
     $('output').innerHTML = j.order.map(k => j.sections[k] ? `<div class="card out ${k==='NOTES'?'noprint':'print-area'}"><h3>${LABELS[k]||k}<span class="noprint"><button class="btn alt small" data-copy="${k}">Copy</button> <button class="btn alt small" data-print="${k}">Save PDF</button></span></h3><pre>${esc(j.sections[k])}</pre></div>` : '').join('');
-    window._sections = j.sections; setRemaining(j.remaining); $('status').textContent = 'Done! Not quite right? Add notes above and rewrite again.';
+    window._sections = j.sections; setRemaining(j.remaining, j.monthly); $('status').textContent = 'Done! Not quite right? Add notes above and rewrite again.';
     $('output').scrollIntoView();
   } catch (err) { $('status').textContent = err.message; $('goBtn').disabled = false; }
 });
