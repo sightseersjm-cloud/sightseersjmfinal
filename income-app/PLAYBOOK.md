@@ -1,26 +1,23 @@
-# ResumeRush — 24-Hour Playbook
+# ResumeRush — Setup & Launch
 
-**Honest expectation:** this makes money only if people see it. A realistic first-day result is $0–$150. Each paid order needs ~30–45 min of your work (use Claude to draft, then you review/personalise).
+The site now does the rewrite itself: customer pays → returns to the site → pastes résumé → Claude writes it (résumé, cover letter, LinkedIn, alt versions by plan). Max 3 generations per payment.
 
-## Hour 0–1: Go live
-1. Create payment links (Stripe Payment Links, PayPal.me, Cash App or Venmo) for $25 / $45 / $75.
-2. Edit `CONFIG` at the bottom of `income-app/index.html`: add your email + the 3 links.
-3. Deploy (Vercel is already set up for this repo; the site lives at `/income-app/`).
+## One-time setup (~20 min)
+1. **Vercel env vars** (Project → Settings → Environment Variables):
+   - `ANTHROPIC_API_KEY` — from console.anthropic.com (add a few dollars of credit; each rewrite costs roughly 5–15¢)
+   - `STRIPE_SECRET_KEY` — Stripe dashboard → Developers → API keys
+   - `BLOB_READ_WRITE_TOKEN` — (recommended) Vercel → Storage → create a Blob store; stops people re-using one payment forever
+2. **Stripe Payment Links** — create 3 one-time prices: **$25, $45, $75** (the server maps amount → plan, so use exactly these).
+   For each link: *After payment → Redirect to your website* → `https://YOUR-DOMAIN/income-app/?session_id={CHECKOUT_SESSION_ID}`
+3. Paste the 3 links into `CONFIG.payLinks` at the bottom of `income-app/index.html`.
+4. Redeploy. **Test first:** buy your own $25 link once (or use Stripe test mode keys + test links) and run a rewrite end to end.
 
-## Hour 1–6: Get eyeballs (free)
-Post in places where job seekers already are — help first, sell second:
-- Facebook groups / local community groups for job seekers, recent grads, laid-off workers
-- Reddit: r/resumes, r/jobs, r/careerguidance (read rules; don't spam — offer a free tip, mention the free score tool only where allowed)
-- LinkedIn: post "I'll rewrite the first 5 résumés for $15 today" (intro offer)
-- WhatsApp status / DM friends, family, classmates, former coworkers
-- Local colleges' career pages / alumni groups
+## Testing without Stripe
+Set `ALLOW_UNPAID=1` in a *preview* deployment only, then open `/income-app/?session_id=cs_test_x`. Never set it in production.
 
-**DM script:** "Hey! I'm helping people fix their résumés this week — free instant score here: <link>. Full pro rewrite in 24h, $25. Know anyone job hunting?"
+## Launch (hours 1–24)
+Post the free-score link where job seekers are (Facebook job groups, LinkedIn, r/resumes where rules allow, friends/family/classmates). Script:
+"Free instant résumé score: <link>. Full pro rewrite + cover letter in minutes from $25."
 
-## Hour 6–24: Fulfil and upsell
-- Deliver within 24h as promised (PDF + Word).
-- Ask every customer for a testimonial and one referral.
-- Post anonymised before/after examples (with permission).
-
-## Math
-Student loan payment ~ $300/mo → 12 Starter orders or 7 Pro orders.
+## Be straight with customers
+Output is AI-drafted and may contain `[bracketed placeholders]` where it needs their real numbers — the page tells them to fill these in. Keep refunds easy; it builds referrals.

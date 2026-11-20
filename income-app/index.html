@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ResumeRush — Résumé Fixed in 24 Hours</title>
-<meta name="description" content="Free résumé score in 10 seconds. Professional résumé rewrite delivered in 24 hours from $25.">
+<title>ResumeRush — Pro Résumé Rewrite in Minutes</title>
+<meta name="description" content="Free résumé score in 10 seconds. Professional résumé rewrite in minutes from $25.">
 <style>
+.out{margin:16px 0}.out pre{white-space:pre-wrap;font:inherit;margin:8px 0 0}.out h3{margin:0;display:flex;justify-content:space-between;align-items:center}.small{padding:6px 12px;font-size:14px}
+@media print{body *{visibility:hidden}.print-area,.print-area *{visibility:visible}.print-area{position:absolute;left:0;top:0;width:100%}.noprint{display:none!important}}
 :root{--bg:#fff;--fg:#14213d;--muted:#5b6478;--card:#f5f7fb;--line:#e1e6ef;--accent:#2a5bd7;--accent-fg:#fff;--good:#1f9d55;--warn:#d98a00;--bad:#d64545}
 @media (prefers-color-scheme:dark){:root{--bg:#0e1424;--fg:#eef1f8;--muted:#9aa5bf;--card:#171f35;--line:#27314d;--accent:#6c93ff;--accent-fg:#0e1424}}
 *{box-sizing:border-box}
@@ -44,8 +46,8 @@ footer{padding:28px 0;color:var(--muted);font-size:14px;border-top:1px solid var
 <header><div class="logo">Resume<span>Rush</span></div><a class="btn alt" href="#pricing">Pricing</a></header>
 
 <div class="hero">
-  <h1>Your résumé, rewritten by a pro in 24 hours.</h1>
-  <p>Get a free instant score below. Then let us fix it — ATS-friendly, results-focused, back in your inbox within a day.</p>
+  <h1>Your résumé, professionally rewritten in minutes.</h1>
+  <p>Get a free instant score below. Then let us fix it — ATS-friendly, results-focused, ready on this page right after you pay.</p>
   <a class="btn" href="#check">Get my free score</a>
 </div>
 
@@ -67,55 +69,54 @@ footer{padding:28px 0;color:var(--muted);font-size:14px;border-top:1px solid var
 
 <section id="pricing">
   <h2>Pick your fix</h2>
-  <p class="sub">One-time price. Delivered within 24 hours. One free round of revisions.</p>
+  <p class="sub">One-time price. Instant result on this page. Up to 3 revisions per order.</p>
   <div class="notice" id="setupNotice"></div>
   <div class="grid">
     <div class="card tier"><div class="tag">Starter</div><div class="price">$25</div>
-      <ul><li>Full résumé rewrite</li><li>ATS keyword optimisation</li><li>PDF + Word file</li></ul>
-      <p><a class="btn" data-plan="starter" href="#order">Choose Starter</a></p></div>
+      <ul><li>Full résumé rewrite</li><li>ATS keyword optimisation</li><li>Copy or save as PDF</li></ul>
+      <p><a class="btn buy" data-plan="starter" href="#">Buy Starter</a></p></div>
     <div class="card tier pop"><div class="tag">Most popular</div><div class="price">$45</div>
-      <ul><li>Everything in Starter</li><li>Tailored cover letter</li><li>LinkedIn headline + About rewrite</li></ul>
-      <p><a class="btn" data-plan="pro" href="#order">Choose Pro</a></p></div>
-    <div class="card tier"><div class="tag">Rush</div><div class="price">$75</div>
-      <ul><li>Everything in Pro</li><li>Delivered in 6 hours</li><li>30-min feedback call</li></ul>
-      <p><a class="btn" data-plan="rush" href="#order">Choose Rush</a></p></div>
+      <ul><li>Everything in Starter</li><li>Tailored cover letter</li><li>LinkedIn headline + About</li></ul>
+      <p><a class="btn buy" data-plan="pro" href="#">Buy Pro</a></p></div>
+    <div class="card tier"><div class="tag">Premium</div><div class="price">$75</div>
+      <ul><li>Everything in Pro</li><li>2 extra résumé versions for different roles</li><li>Priority wording polish</li></ul>
+      <p><a class="btn buy" data-plan="premium" href="#">Buy Premium</a></p></div>
   </div>
 </section>
 
-<section id="order">
-  <h2>Place your order</h2>
-  <p class="sub">After you pay, fill this in and we start right away.</p>
+<section id="studio" style="display:none">
+  <h2>Your rewrite studio</h2>
+  <p class="sub" id="studioInfo"></p>
   <form class="card" id="orderForm">
-    <label>Package</label>
-    <select id="plan"><option value="starter">Starter — $25</option><option value="pro">Pro — $45</option><option value="rush">Rush — $75</option></select>
-    <label>Name</label><input id="name" required>
-    <label>Email</label><input id="email" type="email" required>
-    <label>Job you're targeting</label><input id="target" placeholder="e.g. Marketing coordinator">
-    <label>Paste current résumé (or attach it in the email that opens)</label><textarea id="orderResume"></textarea>
-    <p><button class="btn" type="submit">Pay &amp; send order</button></p>
+    <label>Job you're targeting</label><input id="target" placeholder="e.g. Marketing coordinator at a retail company">
+    <label>Paste your current résumé</label><textarea id="orderResume" required></textarea>
+    <label>Anything else? (optional — extra achievements, tone, what to change on a revision)</label><textarea id="extra" style="min-height:80px"></textarea>
+    <p><button class="btn" type="submit" id="goBtn">Write my documents</button> <span id="status" class="sub"></span></p>
   </form>
+  <div id="output"></div>
 </section>
 
 <footer>© <span id="yr"></span> ResumeRush · Questions? <a id="contactLink" href="#">Email us</a></footer>
 </div>
 
 <script>
-/* ==== CONFIGURE THESE 4 THINGS BEFORE YOU SHARE THE LINK ====
-   1. Create a payment link per package (Stripe Payment Links, PayPal.me, Cash App, Venmo...).
-   2. Paste each URL below. 3. Set your email. 4. Done. */
+/* ==== CONFIGURE BEFORE YOU SHARE THE LINK ====
+   Create 3 Stripe Payment Links ($25 / $45 / $75). For each, set
+   "After payment > redirect" to:  https://YOUR-SITE/income-app/?session_id={CHECKOUT_SESSION_ID}
+   Then paste the three links below. */
 const CONFIG = {
-  email: "",                      // <- your email, where orders arrive
-  payLinks: { starter: "", pro: "", rush: "" } // <- e.g. "https://buy.stripe.com/xxxx"
+  email: "",  // optional support email shown in footer
+  payLinks: { starter: "", pro: "", premium: "" }
 };
-const PRICES = {starter:25, pro:45, rush:75};
 const $ = id => document.getElementById(id);
 $('yr').textContent = new Date().getFullYear();
 $('contactLink').href = CONFIG.email ? 'mailto:' + CONFIG.email : '#';
-if (!CONFIG.email || !Object.values(CONFIG.payLinks).every(Boolean)) {
-  const n = $('setupNotice'); n.style.display = 'block';
-  n.textContent = 'Owner setup needed: open income-app/index.html and fill in CONFIG (email + payment links). Visitors will be asked to pay by email until you do.';
-}
-document.querySelectorAll('[data-plan]').forEach(a => a.addEventListener('click', () => { $('plan').value = a.dataset.plan; }));
+document.querySelectorAll('.buy').forEach(a => a.addEventListener('click', e => {
+  e.preventDefault();
+  const link = CONFIG.payLinks[a.dataset.plan];
+  if (link) location.href = link;
+  else { const n = $('setupNotice'); n.style.display = 'block'; n.textContent = 'Checkout is not set up yet — the owner needs to add payment links in income-app/index.html.'; }
+}));
 
 /* ---- Free résumé scorer (heuristic, runs locally) ---- */
 const VERBS = /\b(led|managed|built|created|launched|improved|increased|reduced|delivered|designed|developed|negotiated|trained|grew|saved|streamlined|organized|achieved|implemented|coordinated|analyzed)\b/gi;
@@ -146,15 +147,34 @@ $('scoreBtn').addEventListener('click', () => {
   $('issues').innerHTML = issues.length ? issues.map(i => '<li>⚠️ ' + i.replace(/</g,'&lt;') + '</li>').join('') : '<li>✅ Looks solid! A pro polish can still lift response rates.</li>';
 });
 
-/* ---- Order flow: open payment link, then prefilled email with details ---- */
-$('orderForm').addEventListener('submit', e => {
-  e.preventDefault();
-  const plan = $('plan').value;
-  const body = `Package: ${plan} ($${PRICES[plan]})\nName: ${$('name').value}\nEmail: ${$('email').value}\nTarget job: ${$('target').value}\n\nRésumé:\n${$('orderResume').value}`;
-  const link = CONFIG.payLinks[plan];
-  if (link) window.open(link, '_blank', 'noopener');
-  if (CONFIG.email) window.location.href = 'mailto:' + CONFIG.email + '?subject=' + encodeURIComponent('ResumeRush order: ' + plan) + '&body=' + encodeURIComponent(body);
-  else alert('Owner has not set up email yet. Please try again later.');
+/* ---- Paid studio ---- */
+const SID = new URLSearchParams(location.search).get('session_id');
+const LABELS = {RESUME:'Résumé','COVER LETTER':'Cover letter',LINKEDIN:'LinkedIn headline & About','ALT VERSION 1':'Alternate résumé 1','ALT VERSION 2':'Alternate résumé 2',NOTES:'Notes — please double-check'};
+const esc = t => t.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+async function api(method, body) {
+  const r = await fetch('/api/rewrite' + (method === 'GET' ? '?session_id=' + encodeURIComponent(SID) : ''), {
+    method, headers: {'Content-Type':'application/json'}, body: method === 'POST' ? JSON.stringify(body) : undefined });
+  const j = await r.json().catch(() => ({})); if (!r.ok) throw new Error(j.error || 'Request failed'); return j;
+}
+function setRemaining(n){ $('studioInfo').textContent = 'Payment confirmed. Revisions left on this order: ' + n; $('goBtn').disabled = n < 1; }
+if (SID) {
+  $('studio').style.display = 'block';
+  api('GET').then(j => { setRemaining(j.remaining); $('studio').scrollIntoView(); })
+    .catch(e => { $('studioInfo').textContent = e.message; $('orderForm').style.display = 'none'; });
+}
+$('orderForm').addEventListener('submit', async e => {
+  e.preventDefault(); $('goBtn').disabled = true; $('status').textContent = 'Writing… this takes 20–40 seconds.';
+  try {
+    const j = await api('POST', {session_id: SID, resume: $('orderResume').value, target: $('target').value, extra: $('extra').value});
+    $('output').innerHTML = j.order.map(k => j.sections[k] ? `<div class="card out ${k==='NOTES'?'noprint':'print-area'}"><h3>${LABELS[k]||k}<span class="noprint"><button class="btn alt small" data-copy="${k}">Copy</button> <button class="btn alt small" data-print="${k}">Save PDF</button></span></h3><pre>${esc(j.sections[k])}</pre></div>` : '').join('');
+    window._sections = j.sections; setRemaining(j.remaining); $('status').textContent = 'Done! Not quite right? Add notes above and rewrite again.';
+    $('output').scrollIntoView();
+  } catch (err) { $('status').textContent = err.message; $('goBtn').disabled = false; }
+});
+$('output').addEventListener('click', e => {
+  const c = e.target.dataset.copy, p = e.target.dataset.print;
+  if (c) navigator.clipboard.writeText(window._sections[c]).then(() => { e.target.textContent = 'Copied'; });
+  if (p) { document.querySelectorAll('#output .out').forEach(x => x.classList.toggle('print-area', x.querySelector('[data-print="'+p+'"]'))); print(); }
 });
 </script>
 </body>
