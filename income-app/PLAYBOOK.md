@@ -1,6 +1,6 @@
 # ResumeRush — Setup & Launch
 
-The site now does the rewrite itself: customer pays → returns to the site → pastes résumé → Claude writes it (résumé, cover letter, LinkedIn, alt versions by plan). Max 3 generations per payment.
+The site now does the rewrite itself: customer pays → returns to the site → pastes resume → Claude writes it (resume, cover letter, LinkedIn, alt versions by plan). Max 3 generations per payment.
 
 ## One-time setup (~20 min)
 1. **Vercel env vars** (Project → Settings → Environment Variables):
@@ -17,7 +17,7 @@ Set `ALLOW_UNPAID=1` in a *preview* deployment only, then open `/income-app/?ses
 
 ## Launch (hours 1–24)
 Post the free-score link where job seekers are (Facebook job groups, LinkedIn, r/resumes where rules allow, friends/family/classmates). Script:
-"Free instant résumé score: <link>. Full pro rewrite + cover letter in minutes from $9.99."
+"Free instant resume score: <link>. Full pro rewrite + cover letter in minutes from $9.99."
 
 ## Be straight with customers
 Output is AI-drafted and may contain `[bracketed placeholders]` where it needs their real numbers — the page tells them to fill these in. Keep refunds easy; it builds referrals.

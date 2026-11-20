@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ResumeRush, Pro Résumé Rewrite in Minutes</title>
-<meta name="description" content="Free résumé score in 10 seconds. Professional résumé rewrite in minutes from $9.99.">
+<title>ResumeRush, Pro Resume Rewrite in Minutes</title>
+<meta name="description" content="Free resume score in 10 seconds. Professional resume rewrite in minutes from $9.99.">
 <style>
 .out{margin:16px 0}.out pre{white-space:pre-wrap;font:inherit;margin:8px 0 0}.out h3{margin:0;display:flex;justify-content:space-between;align-items:center}.lock{filter:blur(5px);user-select:none;pointer-events:none;color:var(--muted)}.small{padding:6px 12px;font-size:14px}
 @media print{body *{visibility:hidden}.print-area,.print-area *{visibility:visible}.print-area{position:absolute;left:0;top:0;width:100%}.noprint{display:none!important}}
@@ -46,19 +46,19 @@ footer{padding:28px 0;color:var(--muted);font-size:14px;border-top:1px solid var
 <header><div class="logo">Resume<span>Rush</span></div><a class="btn alt" href="#pricing">Pricing</a></header>
 
 <div class="hero">
-  <h1>Your résumé, professionally rewritten in minutes.</h1>
+  <h1>Your resume, professionally rewritten in minutes.</h1>
   <p>Get a free instant score below. Then let us fix it, ATS-friendly, results-focused, ready on this page right after you pay.</p>
   <a class="btn" href="#check">Get my free score</a>
 </div>
 
 <section id="check">
-  <h2>Free résumé check</h2>
+  <h2>Free resume check</h2>
   <p class="sub">Runs in your browser. Nothing is uploaded or stored.</p>
   <div class="card">
-    <label for="resume">Paste your résumé text</label>
-    <textarea id="resume" placeholder="Paste your résumé here..."></textarea><label>Or upload a file (PDF, Word .docx or .txt)</label><input type="file" class="upl" data-target="resume" accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain"><div class="sub upmsg" style="margin:4px 0 0"></div>
-    <label for="jobFree">Optional: paste the job posting you're applying to</label><textarea id="jobFree" style="min-height:90px" placeholder="We'll show how well your résumé matches it…"></textarea>
-    <p><button class="btn" id="scoreBtn">Score my résumé</button></p>
+    <label for="resume">Paste your resume text</label>
+    <textarea id="resume" placeholder="Paste your resume here..."></textarea><label>Or upload a file (PDF, Word .docx or .txt)</label><input type="file" class="upl" data-target="resume" accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain"><div class="sub upmsg" style="margin:4px 0 0"></div>
+    <label for="jobFree">Optional: paste the job posting you're applying to</label><textarea id="jobFree" style="min-height:90px" placeholder="We'll show how well your resume matches it…"></textarea>
+    <p><button class="btn" id="scoreBtn">Score my resume</button></p>
     <div id="result">
       <div class="score" id="scoreNum"></div>
       <div class="meter"><i id="bar"></i></div>
@@ -77,16 +77,16 @@ footer{padding:28px 0;color:var(--muted);font-size:14px;border-top:1px solid var
   <div class="notice" id="setupNotice"></div>
   <div class="grid">
     <div class="card tier"><div class="tag">Starter</div><div class="price">$9.99</div>
-      <ul><li>Full résumé rewrite</li><li>Tailored to a job posting + ATS keywords</li><li>Copy or save as PDF</li></ul>
+      <ul><li>Full resume rewrite</li><li>Tailored to a job posting + ATS keywords</li><li>Copy or save as PDF</li></ul>
       <p><a class="btn buy" data-plan="starter" href="#">Buy Starter</a></p></div>
     <div class="card tier pop"><div class="tag">Best value to try</div><div class="price">$14.99<small style="font-size:16px;font-weight:600">/mo</small></div>
-      <ul><li>15 full rewrites every month</li><li>Résumé, cover letter, LinkedIn &amp; interview prep each time</li><li>Tailor for every job you apply to</li><li>Cancel anytime</li></ul>
+      <ul><li>15 full rewrites every month</li><li>Resume, cover letter, LinkedIn &amp; interview prep each time</li><li>Tailor for every job you apply to</li><li>Cancel anytime</li></ul>
       <p><a class="btn buy" data-plan="monthly" href="#">Start monthly plan</a></p></div>
     <div class="card tier"><div class="tag">Pro, one time</div><div class="price">$45</div>
       <ul><li>Everything in Starter</li><li>Tailored to your job posting</li><li>Cover letter + LinkedIn rewrite</li><li>Interview prep: likely questions, tips &amp; your 30-second pitch</li></ul>
       <p><a class="btn buy" data-plan="pro" href="#">Buy Pro</a></p></div>
     <div class="card tier"><div class="tag">Premium</div><div class="price">$75</div>
-      <ul><li>Everything in Pro</li><li>2 extra résumé versions for different roles</li><li>Priority wording polish</li></ul>
+      <ul><li>Everything in Pro</li><li>2 extra resume versions for different roles</li><li>Priority wording polish</li></ul>
       <p><a class="btn buy" data-plan="premium" href="#">Buy Premium</a></p></div>
   </div>
 </section>
@@ -96,8 +96,8 @@ footer{padding:28px 0;color:var(--muted);font-size:14px;border-top:1px solid var
   <p class="sub" id="studioInfo"></p>
   <form class="card" id="orderForm">
     <label>Job you're targeting</label><input id="target" placeholder="e.g. Marketing coordinator at a retail company">
-    <label>Paste your current résumé, or upload it below</label><textarea id="orderResume" required></textarea><label>Or upload a file (PDF, Word .docx or .txt)</label><input type="file" class="upl" data-target="orderResume" accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain"><div class="sub upmsg" style="margin:4px 0 0"></div>
-    <label>Paste the job posting (recommended, we tailor your résumé to it)</label><textarea id="job" style="min-height:110px"></textarea>
+    <label>Paste your current resume, or upload it below</label><textarea id="orderResume" required></textarea><label>Or upload a file (PDF, Word .docx or .txt)</label><input type="file" class="upl" data-target="orderResume" accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain"><div class="sub upmsg" style="margin:4px 0 0"></div>
+    <label>Paste the job posting (recommended, we tailor your resume to it)</label><textarea id="job" style="min-height:110px"></textarea>
     <label>Anything else? (optional, extra achievements, tone, what to change on a revision)</label><textarea id="extra" style="min-height:80px"></textarea>
     <p><button class="btn" type="submit" id="goBtn">Write my documents</button> <span id="status" class="sub"></span></p>
   </form>
@@ -126,7 +126,7 @@ document.querySelectorAll('.buy').forEach(a => a.addEventListener('click', e => 
   else { const n = $('setupNotice'); n.style.display = 'block'; n.textContent = 'Checkout is not set up yet, the owner needs to add payment links in income-app/index.html.'; }
 }));
 
-/* ---- Free résumé scorer (heuristic, runs locally) ---- */
+/* ---- Free resume scorer (heuristic, runs locally) ---- */
 const VERBS = /\b(led|managed|built|created|launched|improved|increased|reduced|delivered|designed|developed|negotiated|trained|grew|saved|streamlined|organized|achieved|implemented|coordinated|analyzed)\b/gi;
 const WEAK = /\b(responsible for|duties included|worked on|helped with|team player|hard[- ]working|detail[- ]oriented)\b/gi;
 /* ---- Job match (local keyword comparison) ---- */
@@ -144,7 +144,7 @@ function jobMatch(resume, job) {
 
 $('scoreBtn').addEventListener('click', () => {
   const t = $('resume').value.trim();
-  if (t.length < 80) { alert('Paste a bit more of your résumé first.'); return; }
+  if (t.length < 80) { alert('Paste a bit more of your resume first.'); return; }
   const words = t.split(/\s+/).length;
   const nums = (t.match(/\d[\d,.%$kK]*/g) || []).length;
   const verbs = (t.match(VERBS) || []).length;
@@ -171,7 +171,7 @@ $('scoreBtn').addEventListener('click', () => {
 });
 
 /* ---- File upload: extract text in the browser (nothing is sent anywhere until you submit) ---- */
-const loadScript = src => new Promise((ok, no) => { const el = document.createElement('script'); el.src = src; el.onload = ok; el.onerror = () => no(new Error('Could not load the file reader. Please paste your résumé instead.')); document.head.appendChild(el); });
+const loadScript = src => new Promise((ok, no) => { const el = document.createElement('script'); el.src = src; el.onload = ok; el.onerror = () => no(new Error('Could not load the file reader. Please paste your resume instead.')); document.head.appendChild(el); });
 async function fileToText(f) {
   const n = f.name.toLowerCase();
   if (f.size > 8 * 1024 * 1024) throw new Error('File is too large (max 8 MB).');
@@ -222,7 +222,7 @@ $('sampleBtn').addEventListener('click', async () => {
 /* ---- Paid studio ---- */
 let SID = new URLSearchParams(location.search).get('session_id');
 try { if (SID) localStorage.setItem('rr_sid', SID); else SID = localStorage.getItem('rr_sid'); } catch (e) {}
-const LABELS = {RESUME:'Résumé','COVER LETTER':'Cover letter',LINKEDIN:'LinkedIn headline & About','INTERVIEW PREP':'Interview prep & tips for this job','ALT VERSION 1':'Alternate résumé 1','ALT VERSION 2':'Alternate résumé 2',NOTES:'Notes, please double-check'};
+const LABELS = {RESUME:'Resume','COVER LETTER':'Cover letter',LINKEDIN:'LinkedIn headline & About','INTERVIEW PREP':'Interview prep & tips for this job','ALT VERSION 1':'Alternate resume 1','ALT VERSION 2':'Alternate resume 2',NOTES:'Notes, please double-check'};
 const esc = t => t.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 async function api(method, body) {
   const r = await fetch('/api/rewrite' + (method === 'GET' ? '?session_id=' + encodeURIComponent(SID) : ''), {

@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   if (!process.env.ANTHROPIC_API_KEY) return res.status(503).json({ error: 'Free sample is not available yet.' });
   const { resume = '', job = '' } = req.body || {};
-  if (String(resume).trim().length < 80 || String(resume).length > 12000) return res.status(400).json({ error: 'Please add your résumé text first.' });
+  if (String(resume).trim().length < 80 || String(resume).length > 12000) return res.status(400).json({ error: 'Please add your resume text first.' });
 
   const day = new Date().toISOString().slice(0, 10);
   const ip = String(req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '').split(',')[0].trim();
@@ -19,14 +19,14 @@ module.exports = async (req, res) => {
   const total = await getCount(gKey);
   if (total >= DAILY_CAP) return res.status(429).json({ error: 'Free samples are all taken for today. Unlock the full rewrite below, or try again tomorrow.', limited: true });
 
-  const system = `You are an expert résumé writer. Using ONLY facts in the résumé (never invent employers, dates, tools or numbers; use bracketed placeholders like [add % result] where a metric would help), return STRICT JSON only, no other text:
+  const system = `You are an expert resume writer. Using ONLY facts in the resume (never invent employers, dates, tools or numbers; use bracketed placeholders like [add % result] where a metric would help), return STRICT JSON only, no other text:
 {"summary":"a 2-3 line professional summary","bullets":[{"before":"original weak bullet","after":"improved bullet"},{...},{...}]}
 Pick the 3 weakest bullets/lines of experience. Plain text, no markdown. Never use em dashes or en dashes; use commas or periods. If a job posting is given, use its keywords only where truthful.`;
   try {
     const r = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: { 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
-      body: JSON.stringify({ model: MODEL, max_tokens: 700, system, messages: [{ role: 'user', content: `JOB POSTING: ${String(job).slice(0, 3000) || '(none)'}\n\nRÉSUMÉ:\n${String(resume)}` }] })
+      body: JSON.stringify({ model: MODEL, max_tokens: 700, system, messages: [{ role: 'user', content: `JOB POSTING: ${String(job).slice(0, 3000) || '(none)'}\n\nRESUME:\n${String(resume)}` }] })
     });
     if (!r.ok) { console.error('preview', r.status, await r.text()); return res.status(502).json({ error: 'Sample is busy right now. Please try again shortly.' }); }
     const text = ((await r.json()).content || []).map(b => b.text || '').join('');
