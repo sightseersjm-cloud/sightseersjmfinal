@@ -28,10 +28,4 @@ const BRIDGE = '\n  <!-- Vercel Bridge -->\n  <script src="/bridge.js" defer></s
 html = html.includes('<head>') ? html.replace('<head>', '<head>' + BRIDGE) : BRIDGE + '\n' + html;
 
 fs.writeFileSync(DEST, html, 'utf8');
-// Copy standalone apps (e.g. income-app) into public/
-const APP_SRC = path.join(__dirname, 'income-app');
-if (fs.existsSync(APP_SRC)) {
-  fs.cpSync(APP_SRC, path.join(publicDir, 'income-app'), { recursive: true });
-  console.log('📦  Copied income-app → public/income-app');
-}
 console.log(`🚀  Built → public/index.html (${(fs.statSync(DEST).size/1024).toFixed(0)} KB)`);
