@@ -1,6 +1,6 @@
 // Vercel serverless function: verifies a paid Stripe Checkout session, then asks Claude to do the rewrite.
 // Env vars: ANTHROPIC_API_KEY, STRIPE_SECRET_KEY, (optional) BLOB_READ_WRITE_TOKEN, ALLOW_UNPAID=1 for testing.
-const PLANS = { 2500: 'starter', 4500: 'pro', 7500: 'premium' };
+const PLANS = { 999: 'starter', 4500: 'pro', 7500: 'premium' };
 const MAX_RUNS = 3;            // generations allowed per payment
 const MAX_INPUT = 20000;       // characters
 const MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-5-5';
